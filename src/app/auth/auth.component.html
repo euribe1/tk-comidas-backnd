@@ -1,0 +1,44 @@
+<div class="container">
+  <mat-card class="box">
+    <div>
+      <div class="user"></div>
+    </div>
+    <button [ngClass]="{hidePrimaryAuth: !active}" (click)="cancelResetPassword()" mat-icon-button class="md-icon-button md-accent"
+      aria-label="Favorite">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <div class="div-container" [ngClass]="{hidePrimaryAuth: active}" color="primary">
+      <div class="error-message">
+        <mat-error class="error-mat" *ngIf="true">
+          <mat-icon [ngClass]="{ 'hide-icon': errorMessage == ''}">warning</mat-icon>
+          <span> {{ errorMessage }} </span>
+        </mat-error>
+      </div>
+      <mat-form-field class="input-log-box">
+        <input type="text" id="user" matInput spellcheck="false" placeholder="Usuario / Correo" [(ngModel)]="loginParams.email" [formControl]="emailFormControl"
+          [errorStateMatcher]="matcher" (keydown)="ckeckInput()" maxlength="30" />
+        <mat-error *ngIf="emailFormControl.hasError('required')">
+          <span>Usuario o correo es requerido</span>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="input-log-box">
+        <input type="password" matInput placeholder="Contraseña" [(ngModel)]="loginParams.password" [formControl]="passFormControl"
+          [errorStateMatcher]="matcher_" (keydown)="ckeckInput()" maxlength="20" />
+        <mat-error *ngIf="passFormControl.hasError('required')">
+          <span>Contraseña es requerida</span>
+        </mat-error>
+      </mat-form-field>
+      <div class="label-login">
+        <a (click)="wantResetPassword()">Olvidé mi contraseña</a>
+      </div>
+      <button mat-button class="button-login" (click)="login()">
+        INGRESAR
+        <div class="spinner-container" *ngIf="busy">
+          <mat-spinner></mat-spinner>
+        </div>
+      </button>
+    </div>
+    <app-forgot-password class="container-reset" *ngIf="activeResetPsw"></app-forgot-password>
+  </mat-card>
+
+</div>

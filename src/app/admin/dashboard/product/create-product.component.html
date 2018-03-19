@@ -1,0 +1,70 @@
+<div class="box">
+    <mat-toolbar class="header">PRODUCTOS
+        <mat-icon>chevron_right</mat-icon> Agregar producto</mat-toolbar>
+    <mat-card class="title">
+        <mat-card-title class="card-title">
+            <div class="title-div">Información del producto</div>
+        </mat-card-title>
+        <mat-card-content id="content" class="content">
+            <div class="spinner-div">
+                <mat-spinner></mat-spinner>
+            </div>
+            <div class="col1">
+                <mat-form-field class="contenedor-input">
+                    <input matInput [(ngModel)]="product.name" placeholder="Nombre" [formControl]="nameFormControl" [errorStateMatcher]="nameMatcher"
+                        maxlength="40">
+                    <mat-error *ngIf="nameFormControl.hasError('required')">
+                        <span>Nombre es requerido</span>
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field class="contenedor-input">
+                    <textarea rows="5" matInput [(ngModel)]="product.ingredients" placeholder="Ingredientes" [formControl]="ingFormControl" [errorStateMatcher]="ingMatcher"></textarea>
+                    <mat-error *ngIf="ingFormControl.hasError('required')">
+                        <span>Ingredientes son requeridos</span>
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field class="contenedor-input">
+                    <input matInput [(ngModel)]="product.description" placeholder="Descripción" [formControl]="descpFormControl" [errorStateMatcher]="descpMatcher"
+                        maxlength="160">
+                    <mat-error *ngIf="descpFormControl.hasError('required')">
+                        <span>Descripción es requerida</span>
+                    </mat-error>
+                </mat-form-field>
+                <div class="precio">
+                    <mat-form-field class="select">
+                        <mat-select [(ngModel)]="product.currency" [formControl]="currencyFormControl" [errorStateMatcher]="currencyMatcher">
+                            <mat-option value="S/.">S/.</mat-option>
+                            <mat-option value="USD.">USD.</mat-option>
+                            <mat-option value="EUR.">EUR.</mat-option>
+                        </mat-select>
+                        <mat-placeholder>
+                            <mat-icon>monetization_on</mat-icon>
+                        </mat-placeholder>
+                        <mat-error *ngIf="currencyFormControl.hasError('required')">
+                            <span>Moneda</span>
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="">
+                        <input matInput type="number" [(ngModel)]="product.price" placeholder="Precio" [formControl]="priceFormControl" [errorStateMatcher]="priceMatcher">
+                        <mat-error *ngIf="priceFormControl.hasError('required')">
+                            <span>Precio es requerido</span>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <mat-form-field class="">
+                    <input matInput type="number" [(ngModel)]="product.stock" placeholder="Stock" [formControl]="stockFormControl" [errorStateMatcher]="stockMatcher">
+                    <mat-error *ngIf="stockFormControl.hasError('required')">
+                        <span>Stock es requerido</span>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col2">
+                <button mat-button class="examinate" (click)="uploadFile()">Examinar</button>
+                <image-upload [max]="1" [style]="'customStyle'" [extensions]="['jpg','png','jpeg']" [class]="'customClass'"></image-upload>
+                <mat-card class="note">Nota: Se deben completar todos los campos obligatoriamente</mat-card>
+                <button mat-button class="save-button" (click)="saveProduct(product)">Guardar</button>
+            </div>
+        </mat-card-content>
+
+    </mat-card>
+</div>

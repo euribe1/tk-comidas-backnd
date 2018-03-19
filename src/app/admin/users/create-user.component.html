@@ -1,0 +1,57 @@
+<div class="box">
+    <mat-toolbar class="header">USUARIOS &#10093; Agregar Usuario</mat-toolbar>
+    <mat-card class="title">
+        <mat-card-title class="card-title">
+            <div class="title-div">Información del usuario</div>
+        </mat-card-title>
+        <mat-card-content id="content" class="content">
+            <div class="spinner-div">
+                <mat-spinner></mat-spinner>
+            </div>
+            <div class="col1">
+                <mat-form-field class="contenedor-input">
+                    <input matInput spellcheck="false" [(ngModel)]="user.name" placeholder="Nombre" [formControl]="nameFormControl" [errorStateMatcher]="nameMatcher"
+                        maxlength="40">
+                    <mat-error *ngIf="nameFormControl.hasError('required')">
+                        <span>Nombre es requerido</span>
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field class="contenedor-input">
+                    <input matInput spellcheck="false" [(ngModel)]="user.lastName" placeholder="Apellido" [formControl]="lastnameFormControl"
+                        [errorStateMatcher]="lastnameMatcher" maxlength="40">
+                    <mat-error *ngIf="lastnameFormControl.hasError('required')">
+                        <span>Apellido es requerido</span>
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field class="contenedor-input">
+                    <input matInput spellcheck="false" [(ngModel)]="user.email" placeholder="Correo" [formControl]="emailFormControl" [errorStateMatcher]="emailMatcher"
+                        maxlength="40">
+                    <mat-error *ngIf="emailFormControl.hasError('required')">
+                        <span>Correo es requerido</span>
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field class="">
+                    <input matInput spellcheck="false" [(ngModel)]="user.nickname" placeholder="Usuario" [formControl]="nicknameFormControl"
+                        [errorStateMatcher]="nicknameMatcher" maxlength="20">
+                    <mat-error *ngIf="nicknameFormControl.hasError('required')">
+                        <span>Usuario es requerido</span>
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field class="">
+                    <input matInput spellcheck="false" [(ngModel)]="user.dni" placeholder="DNI / CE" [formControl]="dniFormControl" [errorStateMatcher]="dniMatcher"
+                        maxlength="9">
+                    <mat-error *ngIf="dniFormControl.hasError('required')">
+                        <span>DNI o CE es requerido</span>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col2">
+                <button mat-button class="examinate" (click)="uploadFile()">Examinar</button>
+                <image-upload [max]="1" [style]="'customStyle'" (removed)="onRemoved($event)" [extensions]="['jpg','png','jpeg']" [class]="'customClassUser'"></image-upload>
+                <mat-card class="note">Nota: Se deben completar todos los campos obligatoriamente</mat-card>
+                <button mat-button class="save-button" (click)="saveUser(user)">Guardar</button>
+            </div>
+        </mat-card-content>
+
+    </mat-card>
+</div>

@@ -1,0 +1,103 @@
+<div class="box">
+  <mat-toolbar class="header">PRODUCTOS</mat-toolbar>
+  <div class="container-button">
+    <button mat-button class="button-add" (click)="goToAddProductView()">Agregar Producto</button>
+  </div>
+  <div class="form-products">
+    <div class="col1">
+      <mat-form-field class="container-input">
+        <input type="text" matInput [formControl]="nameFilter" placeholder="Nombre" />
+      </mat-form-field>
+      <div class="price">
+        <mat-form-field class="container-input-price-a">
+          <input matInput type="number" [formControl]="startPriceFilter" placeholder="Precio desde">
+        </mat-form-field>
+        <mat-form-field class="container-input-price-b">
+          <input matInput type="number" [formControl]="endPriceFilter" placeholder="Precio hasta">
+        </mat-form-field>
+        <mat-form-field class="container-input-price-c">
+          <mat-select [formControl]="currencyFilter">
+            <mat-option value="S/.">S/.</mat-option>
+            <mat-option value="USD.">USD.</mat-option>
+            <mat-option value="EUR.">EUR.</mat-option>
+          </mat-select>
+          <mat-placeholder>
+            <mat-icon>monetization_on</mat-icon>
+          </mat-placeholder>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="col2">
+      <mat-form-field class="container-input">
+        <input matInput [formControl]="ingredientsFilter" placeholder="Ingredientes">
+      </mat-form-field>
+      <mat-form-field class="container-input">
+        <input matInput [formControl]="stockFilter" placeholder="Stock">
+      </mat-form-field>
+    </div>
+
+    <div class="col3">
+      <button mat-button (click)="restoreFilter(product)">Limpiar</button>
+    </div>
+  </div>
+  <div class="container-middle">
+    <button mat-button (click)="downloadFile(product)">Descargar</button>
+    <div>
+      <mat-card>Total:
+        <span>{{ dataLength?.length }}</span>
+      </mat-card>
+    </div>
+  </div>
+  <div class="container-table" id="table">
+    <mat-table #table [dataSource]="dataSource" matSort>
+      <ng-container matColumnDef="name">
+        <mat-header-cell class="cell1" *matHeaderCellDef> Nombre </mat-header-cell>
+        <mat-cell class="cell1" *matCellDef="let element"> {{ element.name }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="price">
+        <mat-header-cell class="cell2" *matHeaderCellDef> Precio </mat-header-cell>
+        <mat-cell class="cell2" *matCellDef="let element"> {{ element.currency }} {{ element.price }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="ingredients">
+        <mat-header-cell class="cell3" *matHeaderCellDef> Ingredientes </mat-header-cell>
+        <mat-cell class="cell3" *matCellDef="let element"> {{ element.ingredients }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="stock">
+        <mat-header-cell class="cell4" *matHeaderCellDef> Stock </mat-header-cell>
+        <mat-cell class="cell4" *matCellDef="let element"> {{ element.stock }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="action">
+        <mat-header-cell class="cell6" *matHeaderCellDef> Acción </mat-header-cell>
+        <mat-cell class="cell6" *matCellDef="let element">
+          {{element.action }}
+          <button mat-button class="crud-button" (click)="goToEditProductView(element)">
+            <mat-icon>mode_edit</mat-icon>
+          </button>
+          <button *ngIf="isAdmin" mat-button class="crud-button off" (click)="hideProduct(element)" [ngClass]="{'hidden-button': element.hiddenProduct}">
+            <mat-icon>visibility_off</mat-icon>
+          </button>
+          <button *ngIf="isAdmin" mat-button class="crud-button on" (click)="showProduct(element)" [ngClass]="{'hidden-button': !element.hiddenProduct}">
+            <mat-icon>visibility</mat-icon>
+          </button>
+          <button *ngIf="isAdmin" mat-button class="crud-button" (click)="removeProduct(element)">
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns; let i = index" [ngClass]="{'opacity-row': row.hiddenProduct}" class="{{ row.id }}"></mat-row>
+    </mat-table>
+    <div *ngIf="!dataLength || dataLength?.length == 0" class="no-data">
+      No hay datos
+    </div>
+    <mat-paginator #paginator [pageSize]="10" [length]="dataLength?.length" [pageIndex]="0" [pageSizeOptions]="[5, 10, 20]">
+    </mat-paginator>
+
+  </div>
+</div>

@@ -1,0 +1,53 @@
+<div class="box">
+    <mat-toolbar class="header">PRODUCTOS
+        <mat-icon>chevron_right</mat-icon> {{ product.name }}
+        <mat-icon>chevron_right</mat-icon> Editar producto</mat-toolbar>
+    <mat-card class="title">
+        <mat-card-title class="card-title">
+            <div class="title-div">Información del producto</div>
+        </mat-card-title>
+        <mat-card-content class="content">
+            <div class="spinner-div">
+                <mat-spinner></mat-spinner>
+            </div>
+            <div class="col1">
+                <mat-form-field class="contenedor-input">
+                    <input matInput [(ngModel)]="product.name" placeholder="Nombre" maxlength="40">
+                </mat-form-field>
+                <mat-form-field class="contenedor-input">
+                    <textarea [(ngModel)]="product.ingredients" rows="5" matInput placeholder="Ingredientes"></textarea>
+                </mat-form-field>
+                <mat-form-field class="contenedor-input">
+                    <input matInput [(ngModel)]="product.description" placeholder="Descripción" maxlength="160">
+                </mat-form-field>
+                <div class="precio">
+                    <mat-form-field class="select">
+                        <mat-select [(ngModel)]="product.currency">
+                            <mat-option value="S/.">S/.</mat-option>
+                            <mat-option value="USD.">USD.</mat-option>
+                            <mat-option value="EUR.">EUR.</mat-option>
+                        </mat-select>
+                        <mat-placeholder>
+                            <mat-icon>monetization_on</mat-icon>
+                        </mat-placeholder>
+                    </mat-form-field>
+                    <mat-form-field class="">
+                        <input type="number" [(ngModel)]="product.price" matInput placeholder="Precio">
+                    </mat-form-field>
+                </div>
+                <mat-form-field class="">
+                    <input type="number" [(ngModel)]="product.stock" matInput placeholder="Stock">
+                </mat-form-field>
+            </div>
+            <div class="col2">
+                <button mat-button class="examinate" (click)="uploadFile()">Examinar</button>
+                <div class="picture"></div>
+                <image-upload [max]="1" [style]="'customStyle'" [extensions]="['jpg','png','jpeg']" [class]="'customClass'">
+                </image-upload>
+                <mat-card class="note">Nota: Se deben completar todos los campos obligatoriamente</mat-card>
+                <button mat-button class="save-button" (click)="updateProduct()">Guardar</button>
+            </div>
+        </mat-card-content>
+
+    </mat-card>
+</div>

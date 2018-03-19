@@ -1,0 +1,98 @@
+<div class="box">
+    <mat-toolbar class="header">REPORTES</mat-toolbar>
+    <div class="col1">
+        <div class="ctn">
+            <div class="container-buttons">
+                <button id="btn1" class="btn1" mat-button (click)="changeToDay('chart1')">día</button>
+                <button id="btn2" class="btn2" mat-button (click)="changeToMonth('chart1')">mes</button>
+                <button id="btn3" class="btn3" mat-button (click)="changeToYear('chart1')">año</button>
+            </div>
+            <div class="chart-container">
+                <canvas id="chart1"></canvas>
+            </div>
+        </div>
+        <div class="ctn">
+            <div class="container-buttons">
+                <button id="btn4" class="btn1" mat-button (click)="changeToDay('chart2')">día</button>
+                <button id="btn5" class="btn2" mat-button (click)="changeToMonth('chart2')">mes</button>
+                <button id="btn6" class="btn3" mat-button (click)="changeToYear('chart2')">año</button>
+            </div>
+            <div class="chart-container">
+                <canvas id="chart2"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col3">
+        <div class="ctn">
+            <div class="container-buttons">
+                <button id="btn7" class="btn1" mat-button (click)="changeToDay('chart3')">día</button>
+                <button id="btn8" class="btn2" mat-button (click)="changeToMonth('chart3')">mes</button>
+                <button id="btn9" class="btn3" mat-button (click)="changeToYear('chart3')">año</button>
+            </div>
+            <div class="chart-container">
+                <canvas id="chart3"></canvas>
+            </div>
+        </div>
+        <div class="ctn">
+            <div class="container-buttons">
+                <button id="btn10" class="btn1" mat-button (click)="changeToDay('chart4')">día</button>
+                <button id="btn11" class="btn2" mat-button (click)="changeToMonth('chart4')">mes</button>
+                <button id="btn12" class="btn3" mat-button (click)="changeToYear('chart4')">año</button>
+            </div>
+            <div class="chart-container">
+                <canvas id="chart4"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col2">
+        <div class="table-container">
+            <div class="container-buttons_">
+                <button id="btn13" class="btn1 btn1_" mat-button (click)="changeToDay('table1')">
+                    día
+                </button>
+                <button id="btn14" class="btn2 btn2_" mat-button (click)="changeToMonth('table1')">
+                    mes
+                </button>
+                <button id="btn15" class="btn3 btn3_" mat-button (click)="changeToYear('table1')">
+                    año
+                </button>
+            </div>
+            <div class="title">Productos más pedidos</div>
+            <mat-table id="table1" [dataSource]="dataSource2">
+                <ng-container matColumnDef="position">
+                    <mat-header-cell *matHeaderCellDef> No. </mat-header-cell>
+                    <mat-cell class="colour position-size" *matCellDef="let element"> {{element.position}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="name">
+                    <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+                    <mat-cell class="colour" *matCellDef="let element"> {{element.name}} </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+            </mat-table>
+        </div>
+        <div class="table-container">
+            <div class="container-buttons_">
+                <button id="btn16" class="btn1 btn1_" mat-button (click)="changeToDay('table2')">día</button>
+                <button id="btn18" class="btn2 btn2_" mat-button (click)="changeToMonth('table2')">mes</button>
+                <button id="btn19" class="btn3 btn3_" mat-button (click)="changeToYear('table2')">año</button>
+            </div>
+            <div class="title">Productos menos pedidos</div>
+            <mat-table id="table2" [dataSource]="dataSource1">
+                <ng-container matColumnDef="position">
+                    <mat-header-cell *matHeaderCellDef> No. </mat-header-cell>
+                    <mat-cell class="colour position-size" *matCellDef="let element"> {{element.position}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="name">
+                    <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+                    <mat-cell class="colour" *matCellDef="let element"> {{element.name}} </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+            </mat-table>
+        </div>
+    </div>

@@ -1,0 +1,82 @@
+<div class="box">
+  <mat-toolbar class="header">ÓRDENES</mat-toolbar>
+  <div class="form-products">
+    <div class="col1">
+      <mat-form-field class="container-input">
+        <input type="text" matInput [formControl]="dniFilter" placeholder="DNI / CE" />
+      </mat-form-field>
+      <mat-form-field class="container-input">
+        <input matInput [matDatepicker]="dateCreatedAt" [formControl]="dateFilter" [(ngModel)]="mydate" placeholder="Fecha de orden">
+        <mat-datepicker-toggle matSuffix [for]="dateCreatedAt"></mat-datepicker-toggle>
+        <mat-datepicker #dateCreatedAt></mat-datepicker>
+      </mat-form-field>
+    </div>
+
+    <div class="col2 margin-col2">
+      <mat-form-field class="container-input">
+        <mat-select [formControl]="stateFilter" placeholder="Estado">
+          <mat-option value="Pendiente">Pendiente</mat-option>
+          <mat-option value="Enviado">Enviado</mat-option>
+          <mat-option value="En Proceso">En Proceso</mat-option>
+          <mat-option value="Entregado">Entregado</mat-option>
+          <mat-option value="Cancelado">Cancelado</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div></div>
+    </div>
+
+    <div class="col3">
+      <button mat-button (click)="restoreOrders(order)">Limpiar</button>
+    </div>
+  </div>
+  <div class="container-middle">
+    <button mat-button (click)="downloadFile(order)">Descargar</button>
+    <div>
+      <mat-card>Total:
+        <span>{{ dataLength?.length }}</span>
+      </mat-card>
+    </div>
+  </div>
+  <div class="container-table" id="table">
+    <mat-table #table [dataSource]="dataSource" matSort>
+      <ng-container matColumnDef="dni">
+        <mat-header-cell class="" *matHeaderCellDef> DNI / CE </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{ element.dni }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="state">
+        <mat-header-cell class="" *matHeaderCellDef> Estado </mat-header-cell>
+        <mat-cell [ngClass]="{'red-tag': element.state == 'Pendiente', 'orange-tag': element.state == 'Enviado', 'pink-tag': element.state == 'En Proceso', 'green-tag': element.state == 'Entregado', 'gray-tag': element.state == 'Cancelado'}"
+          *matCellDef="let element"> {{ element.state }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="address">
+        <mat-header-cell class="" *matHeaderCellDef> Dirección destino </mat-header-cell>
+        <mat-cell class="" *matCellDef="let element"> {{ element.address }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="date">
+        <mat-header-cell class="" *matHeaderCellDef> Fecha </mat-header-cell>
+        <mat-cell style="text-align: center;" *matCellDef="let element"> {{ element.date }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="action">
+        <mat-header-cell class="cell6" *matHeaderCellDef> Acción </mat-header-cell>
+        <mat-cell class="cell6" *matCellDef="let element">
+          {{element.action }}
+          <button mat-button class="crud-button" (click)="goToEditOrderView(element)">
+            <mat-icon>visibility</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="{ 'row.id': true}" class="{{ row.id }}"></mat-row>
+    </mat-table>
+    <div *ngIf="!dataLength || dataLength?.length == 0" class="no-data">
+      No hay datos
+    </div>
+    <mat-paginator #paginator [pageSize]="10" [length]="dataLength?.length" [pageIndex]="0" [pageSizeOptions]="[5, 10, 20]">
+    </mat-paginator>
+  </div>
+</div>

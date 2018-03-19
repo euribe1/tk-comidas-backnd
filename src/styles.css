@@ -1,0 +1,89 @@
+/* You can add global styles to this file, and also import other style files */
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+/*@import 'iPhone-styles.css'; */
+
+body {
+  margin: 0;
+  font-family: 'Open Sans', sans-serif;
+  font-family: 'Roboto', sans-serif;
+}
+
+.customClass .img-ul-file-upload {
+  border-radius: 5px;
+  margin: 5px;
+  display: none;
+}
+
+.customClass .img-ul-upload {
+  background-color: #000 !important;
+}
+
+.customClass .img-ul-container {
+  width: 250px;
+  height: 250px;
+  background-color: #d8d8d8 !important;
+  margin: 0;
+  padding: 0 !important;
+}
+
+.customClass .img-ul-container .img-ul-image {
+  width: 250px !important;
+  height: 250px !important;
+  margin: 0;
+}
+
+.customClassUser .img-ul-file-upload {
+  border-radius: 5px;
+  margin: 5px;
+  display: none;
+}
+
+.customClassUser .img-ul-upload {
+  background-color: #000 !important;
+}
+
+.customClassUser .img-ul-container {
+  width: 200px;
+  height: 200px;
+  background-color: #d8d8d8 !important;
+  margin: 0;
+  padding: 0 !important;
+}
+
+.customClassUser .img-ul-container .img-ul-image {
+  width: 200px !important;
+  height: 200px !important;
+  margin: 0;
+}
+
+.cdk-overlay-pane .mat-dialog-container {
+  border: 3px solid #f0354c;
+  border-radius: 6px;
+}
+
+.mat-dialog-actions {
+  justify-content: flex-end;
+}
+
+.mat-dialog-actions button {
+  background: #f0354c;
+  color: white;
+  border-radius: 6px;
+}
+
+.mat-dialog-content {
+  font-size: 18px;
+}
+
+@media only screen and (min-width: 480px) {
+}
+
+@media only screen and (min-width: 375px) {
+    
+}
+
+@media only screen and (max-width: 369px) {
+}
+
+@media only screen and (max-width: 414px) {
+}

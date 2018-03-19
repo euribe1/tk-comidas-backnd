@@ -1,0 +1,222 @@
+app-dashboard {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.box {
+  position: relative;
+  margin-left: 240px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: white;
+}
+
+.form-products {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  justify-content: space-between;
+  margin: 10px;
+  padding: 15px;
+  padding-right: 32px;
+  padding-left: 32px;
+  border: 2px solid #ffc1c9;
+  border-radius: 8px;
+}
+
+.col1,
+.col2 {
+  width: 32%;
+}
+
+button {
+  background: #f0354c;
+  color: white;
+  width: 180px;
+  font-weight: bolder;
+  border-radius: 6px;
+  font-size: 16px;
+}
+
+.col3 {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  height: 120px;
+  justify-content: flex-start;
+}
+
+.container-input {
+  width: 100%;
+}
+
+.container-input-price-a {
+  width: 108px;
+}
+
+.container-input-price-b {
+  width: 108px;
+}
+
+.container-input-price-c {
+  width: 62px;
+}
+
+.price {
+  display: flex;
+  justify-content: space-between;
+}
+
+.container-button {
+  display: flex;
+  justify-content: flex-end;
+  margin: 10px 10px 10px 10px;
+}
+
+.button-add {
+  height: 38px;
+  width: 230px;
+}
+
+.header {
+  background: transparent;
+  font-weight: bold;
+  height: auto;
+  padding: 10px 10px 0px 10px;
+}
+
+.container-middle {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 10px 20px 10px;
+}
+
+.container-middle div {
+  display: flex;
+  align-items: center;
+}
+
+.container-table {
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-bottom: 14px;
+  height: 45%;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+}
+
+.container-middle mat-card {
+  background: transparent;
+  padding: 0;
+  box-shadow: 0 0px 0px 0px;
+}
+
+mat-header-cell {
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.cell1 {
+  min-width: 142px;
+}
+
+.cell2 {
+  text-align: left;
+  margin-left: 12px;
+}
+
+.cell3 {
+  flex: 0 0 35%;
+  max-width: 35%;
+  margin-left: 12px;
+}
+
+.cell4 {
+  flex: 0 0 44px;
+  margin-left: 12px;
+  min-width: 44px;
+  text-align: center;
+}
+
+.cell5 {
+  text-align: center;
+  margin-left: 12px;
+}
+
+.cell6 {
+  flex: 1 0 250px;
+  text-align: center;
+  max-width: 250px;
+}
+
+mat-header-row {
+  background: #9b9b9b;
+  border: 1px solid white;
+  text-align: center;
+}
+
+mat-row {
+  border: 1px solid white;
+}
+
+mat-table {
+  background: #d1ccd2;
+}
+
+#table::-webkit-scrollbar-track {
+  border-radius: 10px;
+  background-color: white;
+}
+
+#table::-webkit-scrollbar {
+  width: 10px;
+  background-color: white;
+}
+
+#table::-webkit-scrollbar-thumb {
+  border-radius: 6px;
+  background-color: #9b9b9b;
+}
+
+mat-card {
+  font-size: 20px;
+}
+
+.crud-button {
+  width: auto;
+  min-width: 70px;
+  color: white;
+}
+
+.hidden-row {
+  display: none;
+}
+
+.container {
+  position: relative;
+  padding: 0 16px;
+}
+
+.clear {
+  color: gray;
+  background: transparent;
+  border-radius: inherit;
+  width: 40px;
+}
+
+.opacity-row {
+  opacity: 0.5;
+}
+
+.hidden-button {
+  display: none;
+}
+
+.no-data {
+  text-align: center;
+  margin-top: 12px;
+}

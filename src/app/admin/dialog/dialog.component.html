@@ -1,0 +1,22 @@
+<div class="container">
+    <div class="mat-dialog-content">
+        <p>{{ data.message }}</p>
+    </div>
+    <div class="mat-dialog-actions">
+        <button *ngIf="!data.confirmRemove" class="mat-button" (click)="confirmSelection()" color="primary">
+            <span class="mat-button-wrapper">Entendido</span>
+            <div class="mat-button-ripple mat-ripple" matripple=""></div>
+            <div class="mat-button-focus-overlay"></div>
+        </button>
+        <button *ngIf="data.confirmRemove" class="mat-button" (click)="confirmSelection()" color="primary">
+            <span class="mat-button-wrapper">Sí</span>
+            <div class="mat-button-ripple mat-ripple" matripple=""></div>
+            <div class="mat-button-focus-overlay"></div>
+        </button>
+        <button *ngIf="data.confirmRemove" class="mat-button" (click)="cancelSelection()" color="primary">
+            <span class="mat-button-wrapper">Cancelar</span>
+            <div class="mat-button-ripple mat-ripple" matripple=""></div>
+            <div class="mat-button-focus-overlay"></div>
+        </button>
+    </div>
+</div>

@@ -1,0 +1,173 @@
+.box {
+  position: relative;
+  margin-left: 240px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: white;
+  overflow: scroll;
+}
+
+.header {
+  background: transparent;
+  font-weight: bold;
+  height: auto;
+  padding: 24px 10px 0px 10px;
+}
+
+.chart-container {
+  position: relative;
+  margin: auto;
+  height: 38vh;
+  width: 38vw;
+  margin-left: 24px;
+  margin-right: 4px;
+}
+
+.col1 {
+  display: inline-block;
+  margin: 12px 0 12px;
+}
+
+.col1 div.ctn,
+.col3 div.ctn {
+  display: inline-block;
+}
+
+.col3 {
+  display: inline-block;
+  margin: 24px 0 24px;
+}
+
+.col2 {
+  display: flex;
+  justify-content: flex-start;
+  margin: 12px 0 12px;
+}
+
+.table-container {
+  display: flex;
+  flex-direction: column;
+  max-height: 500px;
+  min-width: 400px;
+  margin-left: 24px;
+  width: 500px;
+}
+
+.col2 .table-container mat-table mat-header-row {
+  display: none;
+}
+
+.colour {
+  font-size: 14px;
+}
+
+.position-size {
+  width: 28px;
+  flex: none;
+}
+
+.title {
+  text-align: center;
+  margin: 8px 0 8px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.box::-webkit-scrollbar-track {
+  border-radius: 10px;
+  background-color: white;
+}
+
+.box::-webkit-scrollbar {
+  width: 10px;
+  background-color: white;
+}
+
+.box::-webkit-scrollbar-thumb {
+  border-radius: 6px;
+  background-color: #9b9b9b;
+}
+
+.container-buttons {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn1 {
+  border-radius: 8px 0 0 8px;
+  border: 1px solid #a9a9a9cc;
+  border-right-width: 0px;
+  background: white;
+}
+
+.btn2 {
+  border: 1px solid #a9a9a9cc;
+  border-right-width: 0px;
+  background: white;
+  border-radius: 0px;
+}
+
+.btn3 {
+  border-radius: 0 8px 8px 0;
+  border: 1px solid #a9a9a9cc;
+  background: white;
+}
+
+.container-buttons_ {
+  display: inline-block;
+  text-align: right;
+}
+
+.btn1,
+.btn2 {
+  margin-right: -5px;
+}
+
+.btn1:focus,
+.btn2:focus,
+.btn3:focus {
+  background: #e9617a;
+  color: white;
+  font-weight: bold;
+}
+
+.selected {
+  background: #e9617a;
+  color: white;
+  font-weight: bold;
+}
+
+.spinner-container {
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+
+  .mat-spinner {
+    width: 20px !important;
+    height: 20px !important;
+  }
+
+  .mat-spinner ::ng-deep svg {
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  .mat-spinner ::ng-deep circle {
+    stroke: white;
+  }
+}
+
+.display {
+  display: none;
+}
+
+@media only screen and (max-width: 768px) {
+  .box {
+    margin-left: 0px;
+  }
+  .chart-container{
+    margin: auto;
+    width: auto;
+  }
+}

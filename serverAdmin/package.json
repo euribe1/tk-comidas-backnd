@@ -1,0 +1,24 @@
+{
+  "name": "serveradmin",
+  "version": "1.0.0",
+  "description": "server admin sdk firebase",
+  "main": "serverAdmin.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "server",
+    "node",
+    "firebase",
+    "admin",
+    "sdk"
+  ],
+  "author": "Eliecer Uribe",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "firebase-admin": "^5.7.0",
+    "nodemailer": "^4.4.2"
+  }
+}

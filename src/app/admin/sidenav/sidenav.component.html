@@ -1,0 +1,27 @@
+<mat-sidenav #sidenav mode="side" opened="true" class=" primary">
+  <mat-nav-list color="primary">
+    <mat-list-item class="logo">
+      <img matListAvatar src="{{ user?.profileImagePath }}" width="150px" height="150px" alt="...">
+      <h3 matLine class="text-span">{{ user?.name }}</h3>
+    </mat-list-item>
+    <a color="primary" class="color first" mat-list-item routerLink="/dashboard" routerLinkActive="active">
+      <mat-icon>dashboard</mat-icon>
+      <span matLine class="text-span">Productos</span>
+    </a>
+    <a *ngIf="userAdmin" mat-list-item class="color" routerLink="/users" routerLinkActive="active">
+      <mat-icon>account_circle</mat-icon>
+      <span matLine class="text-span">Usuarios</span>
+    </a>
+    <a mat-list-item class="color" routerLink="/orders" routerLinkActive="active">
+      <mat-icon>local_dining</mat-icon>
+      <span matLine class="text-span">Órdenes</span>
+    </a>
+    <a class="color last" mat-list-item routerLink="/reports" routerLinkActive="active">
+      <mat-icon>insert_chart</mat-icon>
+      <span matLine class="text-span">Reportes</span>
+    </a>
+    <div class="box-logout">
+      <button mat-button class="button-logout" (click)="logout()">Cerrar Sesión</button>
+    </div>
+  </mat-nav-list>
+</mat-sidenav>

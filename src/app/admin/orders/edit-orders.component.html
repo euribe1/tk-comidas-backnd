@@ -1,0 +1,120 @@
+<div class="box">
+    <mat-toolbar class="header">ÓRDENES
+        <mat-icon>chevron_right</mat-icon> {{ user.dni }}</mat-toolbar>
+    <div class="row1">
+        <mat-card class="card-col1">
+            <mat-card-title class="card-title">
+                <div class="title-div">Detalle</div>
+            </mat-card-title>
+            <mat-card-content id="content" class="content">
+                <div class="col1">
+                    <table class="table1">
+                        <tr>
+                            <td>Estado</td>
+                            <td [ngClass]="{'red-tag': order.status == 'Pendiente', 'orange-tag': order.status == 'Enviado', 'pink-tag': order.status == 'En Proceso', 'green-tag': order.status == 'Entregado', 'gray-tag': order.status == 'Cancelado'}">{{ order.status }}</td>
+                        </tr>
+                        <tr>
+                            <td>Tipo</td>
+                            <td>{{ order.type }}</td>
+                        </tr>
+                        <tr>
+                            <td>Pago</td>
+                            <td>{{ order.paymentMethod }}</td>
+                        </tr>
+                        <tr>
+                            <td>Fecha</td>
+                            <td>{{ order.date }}</td>
+                        </tr>
+                        <tr *ngIf=" order.orderStatus==3 ">
+                            <td>Hora</td>
+                            <td>{{ order.deliveryTime }}</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <button *ngIf="order.orderStatus !=4 && order.orderStatus !=3 " class="next-state-button
+                                " (click)="changeStatusOrder(order.key) " mat-button>siguiente estado</button>
+                            </td>
+                            <td>
+                                <button *ngIf="order.orderStatus !=4 && order.orderStatus !=3 " class="cancel-order-button
+                                " (click)="cancelOrder(order.key) " mat-button>cancelar orden</button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </mat-card-content>
+        </mat-card>
+        <mat-card class="card-col2 ">
+            <mat-card-title class="card-title ">
+                <div class="title-div ">Productos</div>
+            </mat-card-title>
+            <mat-card-content id="table " class="content-table ">
+                <table cellpadding="15 " class="table2 ">
+                    <thead class="header-table ">
+                        <tr>
+                            <th class="border-row ">Nombre</th>
+                            <th class="border-row ">Cantidad</th>
+                            <th class="border-row ">Precio</th>
+                            <th class="border-row ">Total</th>
+                        </tr>
+                    </thead>
+                    <tr *ngFor="let product of products | async ">
+                        <td class="border-row ">{{ product.name }}</td>
+                        <td class="border-row ">{{ product.quantity }}</td>
+                        <td class="border-row ">{{ product.price }}</td>
+                        <td class="border-row ">{{ product.total }}</td>
+                    </tr>
+                    <tfoot class="footer-table ">
+                        <tr class="border-row ">
+                            <td></td>
+                            <td></td>
+                            <td>Total a pagar</td>
+                            <td class="payment ">{{ currency }} {{ totalPayment }}</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </mat-card-content>
+        </mat-card>
+    </div>
+    <div class="row1 div-margin-top">
+        <mat-card class="card-col1 ">
+            <mat-card-title class="card-title ">
+                <div class="title-div ">Detalle Cliente</div>
+            </mat-card-title>
+            <mat-card-content id=" " class="content ">
+                <div class="col1 ">
+                    <table class="table1 ">
+                        <tr>
+                            <td>Nombre</td>
+                            <td>{{ user.name }} {{ user.lastName }}</td>
+                        </tr>
+                        <tr>
+                            <td>DNI / CE</td>
+                            <td>{{ user.dni }}</td>
+                        </tr>
+                        <tr>
+                            <td>Teléfono</td>
+                            <td>{{ user.phone }}</td>
+                        </tr>
+                        <tr>
+                            <td>Email</td>
+                            <td>{{ user.email }}</td>
+                        </tr>
+                        <tr>
+                            <td>Dirección</td>
+                            <td>{{ order.userAddress }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </mat-card-content>
+        </mat-card>
+
+        <mat-card class="card-col2 " *ngIf="!order.userWillPickupOrder ">
+            <mat-card-title class="card-title ">
+                <div class="title-div ">Ruta de Entrega</div>
+            </mat-card-title>
+            <mat-card-content>
+                <div class="map "></div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

@@ -1,0 +1,90 @@
+<div class="box">
+    <mat-toolbar class="header">USUARIOS</mat-toolbar>
+    <div class="container-button">
+        <button mat-button class="button-add" (click)="goToAddUserView()">Agregar Usuario</button>
+    </div>
+    <div class="form-products">
+        <div class="col1">
+            <mat-form-field class="container-input">
+                <input type="text" matInput [formControl]="nameFilter" placeholder="Nombre" />
+            </mat-form-field>
+            <mat-form-field class="container-input">
+                <input type="text" matInput [formControl]="nicknameFilter" placeholder="Usuario" />
+            </mat-form-field>
+        </div>
+
+        <div class="col2">
+            <mat-form-field class="container-input">
+                <input matInput [formControl]="emailFilter" placeholder="Correo">
+            </mat-form-field>
+            <div class="date">
+                <mat-form-field class="container-input-date-a">
+                    <input matInput [matDatepicker]="dateFrom" [formControl]="myDateFromFilter" [(ngModel)]="myDateFrom" placeholder="Fecha inicio">
+                    <mat-datepicker-toggle matSuffix [for]="dateFrom"></mat-datepicker-toggle>
+                    <mat-datepicker #dateFrom></mat-datepicker>
+                </mat-form-field>
+                <mat-form-field class="container-input-date-b">
+                    <input matInput [matDatepicker]="dateTo" [formControl]="myDateToFromFilter" [(ngModel)]="myDateTo" placeholder="Fecha fin">
+                    <mat-datepicker-toggle matSuffix [for]="dateTo"></mat-datepicker-toggle>
+                    <mat-datepicker #dateTo></mat-datepicker>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="col3">
+            <button mat-button (click)="restoreFilter(user)">Limpiar</button>
+        </div>
+    </div>
+    <div class="container-middle">
+        <button mat-button (click)="downloadFile(user)">Descargar</button>
+        <div>
+            <mat-card>Total:
+                <span>{{ dataLength?.length }}</span>
+            </mat-card>
+        </div>
+    </div>
+    <div class="container-table" id="table">
+        <mat-table #table [dataSource]="dataSource" matSort>
+            <ng-container matColumnDef="name">
+                <mat-header-cell class="" *matHeaderCellDef> Nombre </mat-header-cell>
+                <mat-cell class="" *matCellDef="let element"> {{ element.name }} {{ element.lastName }} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="nickname">
+                <mat-header-cell class="" *matHeaderCellDef> Usuario </mat-header-cell>
+                <mat-cell class="" *matCellDef="let element"> {{ element.nickname }} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="email">
+                <mat-header-cell class="" *matHeaderCellDef> Correo </mat-header-cell>
+                <mat-cell class="" *matCellDef="let element"> {{ element.email }} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="date">
+                <mat-header-cell class="" *matHeaderCellDef> Fecha </mat-header-cell>
+                <mat-cell style="text-align: center;" *matCellDef="let element"> {{ element.date }} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="action">
+                <mat-header-cell class="cell6" *matHeaderCellDef> Acción </mat-header-cell>
+                <mat-cell class="cell6" *matCellDef="let element">
+                    {{element.action }}
+                    <button mat-button class="crud-button" (click)="goToEditUserView(element)">
+                        <mat-icon>mode_edit</mat-icon>
+                    </button>
+                    <button mat-button class="crud-button" (click)="removeUser(element)">
+                        <mat-icon>cancel</mat-icon>
+                    </button>
+                </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="{ 'row.id': true}" class="{{ row.id }}"></mat-row>
+        </mat-table>
+        <div *ngIf="!dataLength || dataLength?.length == 0" class="no-data">
+            No hay datos
+        </div>
+        <mat-paginator #paginator [pageSize]="10" [length]="dataLength?.length" [pageIndex]="0" [pageSizeOptions]="[5, 10, 20]">
+        </mat-paginator>
+    </div>
+</div>
