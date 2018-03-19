@@ -88,7 +88,6 @@ export class UpdatePasswordComponent implements OnInit {
           resp => {
             const res = JSON.parse(resp["_body"]);
             if (res.updated) {
-              // this.router.navigate(["signin"]);
               this.signInWithEmail(this.email, this.newPswd);
             } else if (!res.equal && !res.error.code) {
               this.errorMessage = "No coincide la clave temporal";
