@@ -138,3 +138,11 @@ mat-spinner {
 .opacity {
   opacity: 0.5;
 }
+
+@media only screen and (min-width: 1400px) {
+  .box{
+    margin-left: 312px;
+  }
+}
+
+

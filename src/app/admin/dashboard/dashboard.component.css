@@ -220,3 +220,13 @@ mat-card {
   text-align: center;
   margin-top: 12px;
 }
+
+@media only screen and (min-width: 1400px) {
+  .box{
+    margin-left: 312px;
+  }
+  .container-table {
+   height: 55%;
+  }
+}
+

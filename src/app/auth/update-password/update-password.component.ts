@@ -8,6 +8,7 @@ import {
 import { ErrorStateMatcher } from "@angular/material/core";
 import { Http, URLSearchParams } from "@angular/http";
 import { Router } from "@angular/router";
+import { AngularFireAuth } from "angularfire2/auth";
 
 import { AuthService } from "../../services/auth.service";
 import { error } from "util";
@@ -47,7 +48,8 @@ export class UpdatePasswordComponent implements OnInit {
   constructor(
     private http: Http,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private angularFireAuth: AngularFireAuth
   ) {
     this.authService.isLogged().subscribe(
       result => {
@@ -86,16 +88,19 @@ export class UpdatePasswordComponent implements OnInit {
           resp => {
             const res = JSON.parse(resp["_body"]);
             if (res.updated) {
-              this.router.navigate(["signin"]);
+              // this.router.navigate(["signin"]);
+              this.signInWithEmail(this.email, this.newPswd);
             } else if (!res.equal && !res.error.code) {
               this.errorMessage = "No coincide la clave temporal";
+              this.busy = false;
             } else if (res.error.code) {
               this.errorMessage = res.error.code;
+              this.busy = false;
             } else {
               this.errorMessage =
                 "Ha surgido un error al intentar actualizar contraseña";
+              this.busy = false;
             }
-            this.busy = false;
           },
           error => {
             if (error) {
@@ -106,5 +111,32 @@ export class UpdatePasswordComponent implements OnInit {
           }
         );
     }
+  }
+  public signInWithEmail(email, password) {
+    this.angularFireAuth.auth
+      .signInWithEmailAndPassword(email, password)
+      .then(response => {
+        if (response.uid) {
+          this.errorMessage = "";
+          this.busy = false;
+          this.router.navigate(["/"]);
+        }
+      })
+      .catch(error => {
+        this.busy = false;
+        switch (error.code) {
+          case "auth/wrong-password":
+            this.errorMessage = "Contraseña inválida";
+            break;
+          case "auth/invalid-email":
+            this.errorMessage = "Correo electrónico con formato inválido";
+            break;
+          case "auth/user-not-found":
+            this.errorMessage = "Usuario no registrado";
+            break;
+          default:
+            this.errorMessage = "Ha ocurrido un error";
+        }
+      });
   }
 }
