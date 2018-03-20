@@ -76,7 +76,7 @@ export class OrderDatabase {
             address: "",
             lat: lat,
             lng: lng,
-            date: "",
+            date: "00-00-0000",
             action: "",
             id: ""
           };
@@ -87,16 +87,23 @@ export class OrderDatabase {
             .valueChanges()
             .subscribe(resp => {
               if (resp) {
-                const myDate = data.payload.val().timestamp.split(' ')[0] + ' ' + data.payload.val().timestamp.split(' ')[1];
-                const creationDate = new Date(myDate);
-                const day = ("0" + creationDate.getDate()).slice(-2);
-                const month = ("0" + (creationDate.getMonth() + 1)).slice(-2);
+                if (data.payload.val().timestamp !== undefined) {
+                  const myDate =
+                    data.payload.val().timestamp.split(" ")[0] +
+                    " " +
+                    data.payload.val().timestamp.split(" ")[1];
+                  const creationDate = new Date(myDate);
+                  const day = ("0" + creationDate.getDate()).slice(-2);
+                  const month = ("0" + (creationDate.getMonth() + 1)).slice(-2);
+                  obj.date = day + "-" + month + "-" + creationDate.getFullYear();
+                }
+                else obj.date = "00-00-0000";
                 obj.dni = resp["dni"];
                 obj.state = state > -1 ? this.statusOrders[state] : "Pendiente";
                 obj.address = data.payload.val().userAddress
                   ? data.payload.val().userAddress
                   : "Recojo";
-                  obj.date = day + "-" + month + "-" + creationDate.getFullYear();
+                
                 obj.action = "";
                 obj.id = data.key;
               }

@@ -59,9 +59,18 @@ export class EditOrdersComponent implements OnInit {
     this.orderRef.snapshotChanges().subscribe(data => {
       const order = data.payload.val();
       if (order) {
-        const myDate =
-          order.timestamp.split(' ')[0] + ' ' + order.timestamp.split(' ')[1];
-        const creationDate = new Date(myDate);
+        let date = '00-00-0000';
+        let hour = 'hh:mm';
+        if (order.timestamp !== undefined) {
+          const myDate =
+            order.timestamp.split(' ')[0] + ' ' + order.timestamp.split(' ')[1];
+          const creationDate = new Date(myDate);
+          date =  ('0' + creationDate.getDate()).slice(-2) + '-' + ('0' + (creationDate.getMonth() + 1)).slice(-2) + '-' + creationDate.getFullYear();
+          hour = creationDate.getHours() + ':' + ('0' + creationDate.getMinutes()).slice(-2);
+        }
+        if (!order.userWillPickupOrder && order.userLatitude == 0 && order.userLongitude == 0) {
+          order.userWillPickupOrder = true;
+        }
         const directionsService = new google.maps.DirectionsService();
         const directionsDisplay = new google.maps.DirectionsRenderer();
         const obj = {
@@ -74,16 +83,8 @@ export class EditOrdersComponent implements OnInit {
           type: order.userWillPickupOrder ? 'Recojo' : 'Delivery',
           lat: order.userLatitude,
           lng: order.userLongitude,
-          date:
-            ('0' + creationDate.getDate()).slice(-2) +
-            '-' +
-            ('0' + (creationDate.getMonth() + 1)).slice(-2) +
-            '-' +
-            creationDate.getFullYear(),
-          hour:
-            creationDate.getHours() +
-            ':' +
-            ('0' + creationDate.getMinutes()).slice(-2),
+          date: date,
+          hour: hour,
           userAddress: order.userAddress ? order.userAddress : '--',
           userId: order.userId,
           deliveryTime: order.deliveryTime ? order.deliveryTime : ''
