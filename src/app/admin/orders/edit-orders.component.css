@@ -311,4 +311,13 @@ mat-card {
   .box{
     margin-left: 312px;
   }
+  .div-margin-top {
+    margin-top: 0px;
+  }
+  .setMapHeigh {
+    height: 150%;
+  }
+  .map {
+    height: 100%;
+  }
 }
