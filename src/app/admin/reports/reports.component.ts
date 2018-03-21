@@ -361,27 +361,45 @@ export class ReportsComponent implements OnInit, AfterViewInit {
         this.chart1.data.labels = this.getLast5Days(new Date());
         this.chart1.update();
         this.getTotalSalesByDays(this.chart1);
+        document.getElementById('btn1').classList.add('selected');
+        document.getElementById('btn2').classList.remove('selected');
+        document.getElementById('btn3').classList.remove('selected');
         break;
       case "chart2":
         this.chart2.data.labels = this.getLast5Days(new Date());
         this.chart2.update();
         this.getUsersRegisteredByDays(this.chart2);
+        document.getElementById('btn4').classList.add('selected');
+        document.getElementById('btn5').classList.remove('selected');
+        document.getElementById('btn6').classList.remove('selected');
         break;
       case "chart3":
         this.chart3.data.labels = this.getLast5Days(new Date());
         this.chart3.update();
         this.getOrdersRecievedByDays(this.chart3);
+        document.getElementById('btn7').classList.add('selected');
+        document.getElementById('btn8').classList.remove('selected');
+        document.getElementById('btn9').classList.remove('selected');
         break;
       case "chart4":
         this.chart4.data.labels = this.getLast5Days(new Date());
         this.chart4.update();
         this.getOrdersCanceledByDays(this.chart4);
+        document.getElementById('btn10').classList.add('selected');
+        document.getElementById('btn11').classList.remove('selected');
+        document.getElementById('btn12').classList.remove('selected');
         break;
       case "table1":
         this.getTop5ProductsByDay();
+        document.getElementById('btn13').classList.add('selected');
+        document.getElementById('btn14').classList.remove('selected');
+        document.getElementById('btn15').classList.remove('selected');
         break;
       case "table2":
         this.getLast5ProductsByDay();
+        document.getElementById('btn16').classList.add('selected');
+        document.getElementById('btn18').classList.remove('selected');
+        document.getElementById('btn19').classList.remove('selected');
         break;
     }
   }
@@ -391,27 +409,45 @@ export class ReportsComponent implements OnInit, AfterViewInit {
         this.chart1.data.labels = this.getLast5Months(new Date());
         this.chart1.update();
         this.getTotalSalesByMonths(this.chart1);
+        document.getElementById('btn1').classList.remove('selected');
+        document.getElementById('btn2').classList.add('selected');
+        document.getElementById('btn3').classList.remove('selected');
         break;
       case "chart2":
         this.chart2.data.labels = this.getLast5Months(new Date());
         this.chart2.update();
         this.getUsersRegisteredByMonths(this.chart2);
+        document.getElementById('btn4').classList.remove('selected');
+        document.getElementById('btn5').classList.add('selected');
+        document.getElementById('btn6').classList.remove('selected');
         break;
       case "chart3":
         this.chart3.data.labels = this.getLast5Months(new Date());
         this.chart3.update();
         this.getOrdersRecievedByMonth(this.chart3);
+        document.getElementById('btn7').classList.remove('selected');
+        document.getElementById('btn8').classList.add('selected');
+        document.getElementById('btn9').classList.remove('selected');
         break;
       case "chart4":
         this.chart4.data.labels = this.getLast5Months(new Date());
         this.chart4.update();
         this.getOrdersCanceledByMonth(this.chart4);
+        document.getElementById('btn10').classList.remove('selected');
+        document.getElementById('btn11').classList.add('selected');
+        document.getElementById('btn12').classList.remove('selected');
         break;
       case "table1":
         this.getTop5ProductsByMonth();
+        document.getElementById('btn13').classList.remove('selected');
+        document.getElementById('btn14').classList.add('selected');
+        document.getElementById('btn15').classList.remove('selected');
         break;
       case "table2":
         this.getLast5ProductsByMonth();
+        document.getElementById('btn16').classList.remove('selected');
+        document.getElementById('btn18').classList.add('selected');
+        document.getElementById('btn19').classList.remove('selected');
         break;
     }
   }
@@ -421,27 +457,45 @@ export class ReportsComponent implements OnInit, AfterViewInit {
         this.chart1.data.labels = this.getLast5Years(new Date());
         this.chart1.update();
         this.getTotalSalesByYears(this.chart1);
+        document.getElementById('btn1').classList.remove('selected');
+        document.getElementById('btn2').classList.remove('selected');
+        document.getElementById('btn3').classList.add('selected');
         break;
       case "chart2":
         this.chart2.data.labels = this.getLast5Years(new Date());
         this.chart2.update();
         this.getUsersRegisteredByYears(this.chart2);
+        document.getElementById('btn4').classList.remove('selected');
+        document.getElementById('btn5').classList.remove('selected');
+        document.getElementById('btn6').classList.add('selected');
         break;
       case "chart3":
         this.chart3.data.labels = this.getLast5Years(new Date());
         this.getOrdersRecievedByYear(this.chart3);
         this.chart3.update();
+        document.getElementById('btn7').classList.remove('selected');
+        document.getElementById('btn8').classList.remove('selected');
+        document.getElementById('btn9').classList.add('selected');
         break;
       case "chart4":
         this.chart4.data.labels = this.getLast5Years(new Date());
         this.chart4.update();
         this.getOrdersCanceledByYear(this.chart4);
+        document.getElementById('btn10').classList.remove('selected');
+        document.getElementById('btn11').classList.remove('selected');
+        document.getElementById('btn12').classList.add('selected');
         break;
       case "table1":
         this.getTop5ProductsByYear();
+        document.getElementById('btn13').classList.remove('selected');
+        document.getElementById('btn14').classList.remove('selected');
+        document.getElementById('btn15').classList.add('selected');
         break;
       case "table2":
         this.getLast5ProductsByYear();
+        document.getElementById('btn16').classList.remove('selected');
+        document.getElementById('btn18').classList.remove('selected');
+        document.getElementById('btn19').classList.add('selected');
         break;
     }
   }
