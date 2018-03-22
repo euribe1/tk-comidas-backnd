@@ -117,18 +117,24 @@ getLast5ProductsByDay = (req, res) => {
       data.forEach(elem => {
         // Iterate OrdersGroupedByPlaces
         count++;
-        const date = new Date(elem.val().timestamp);
-        const arr = element.split("-");
-        const index = months.findIndex(function(el) {
-          return el === arr[1];
-        });
-        if (
-          date.getDate() === parseInt(arr[0]) &&
-          date.getMonth() === index &&
-          date.getFullYear() === parseInt(arr[2])
-        ) {
-          let key1 = elem.key;
-          array.push(key1);
+        if (elem.val().timestamp !== undefined) {
+          const myDate =
+            elem.val().timestamp.split(" ")[0] +
+            " " +
+            elem.val().timestamp.split(" ")[1];
+          const date = new Date(myDate);
+          const arr = element.split("-");
+          const index = months.findIndex(function(el) {
+            return el === arr[1];
+          });
+          if (
+            date.getDate() === parseInt(arr[0]) &&
+            date.getMonth() === index &&
+            date.getFullYear() === parseInt(arr[2])
+          ) {
+            let key1 = elem.key;
+            array.push(key1);
+          }
         }
         if (count === data.numChildren()) {
           if (array.length === 0) {
@@ -195,17 +201,23 @@ getProductsByMonth = (req, res) => {
       data.forEach(elem => {
         // Iterate OrdersGroupedByPlaces
         count++;
-        const date = new Date(elem.val().timestamp);
-        const arr = element.split("-");
-        const index = months.findIndex(function(el) {
-          return el === arr[0];
-        });
-        if (
-          date.getMonth() === index &&
-          date.getFullYear() === parseInt(arr[1])
-        ) {
-          let key1 = elem.key;
-          array.push(key1);
+        if (elem.val().timestamp !== undefined) {
+          const myDate =
+            elem.val().timestamp.split(" ")[0] +
+            " " +
+            elem.val().timestamp.split(" ")[1];
+          const date = new Date(myDate);
+          const arr = element.split("-");
+          const index = months.findIndex(function(el) {
+            return el === arr[0];
+          });
+          if (
+            date.getMonth() === index &&
+            date.getFullYear() === parseInt(arr[1])
+          ) {
+            let key1 = elem.key;
+            array.push(key1);
+          }
         }
         if (count === data.numChildren()) {
           if (array.length === 0) {
@@ -270,11 +282,17 @@ getProductsByYear = (req, res) => {
       data.forEach(elem => {
         // Iterate OrdersGroupedByPlaces
         count++;
-        const date = new Date(elem.val().timestamp);
-        const arr = element.split("-");
-        if (date.getFullYear() === parseInt(arr[0])) {
-          let key1 = elem.key;
-          array.push(key1);
+        if (elem.val().timestamp !== undefined) {
+          const myDate =
+            elem.val().timestamp.split(" ")[0] +
+            " " +
+            elem.val().timestamp.split(" ")[1];
+          const date = new Date(myDate);
+          const arr = element.split("-");
+          if (date.getFullYear() === parseInt(arr[0])) {
+            let key1 = elem.key;
+            array.push(key1);
+          }
         }
         if (count === data.numChildren()) {
           if (array.length === 0) {
