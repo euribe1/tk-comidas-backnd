@@ -35,7 +35,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   displayedColumns: any;
   dataSource1: any;
   dataSource2: any;
-  ipAddress: string = "localhost:8080"; //"40.121.85.209";
+  ipAddress: string = "40.121.85.209";
   lastDays: Array<any>;
   lastMonths: Array<any>;
   lastYears: Array<any>;
@@ -776,7 +776,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     const data = new URLSearchParams();
     data.append("idPlace", "-KqUfHv6pOigweWypUmH");
     this.http
-      .post(`http://${this.ipAddress}/admin/getLast5ProductsByDay`, data)
+      .post(`http://${this.ipAddress}/serverAdmin/admin/getLast5ProductsByDay`, data)
       .subscribe(res => {
         const resp = JSON.parse(res["_body"]);
         console.log(resp);
@@ -895,7 +895,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
       const data = new URLSearchParams();
       data.append("idPlace", "-KqUfHv6pOigweWypUmH");
       this.http
-        .post(`http://${this.ipAddress}/admin/getProductsByMonth`, data)
+        .post(`http://${this.ipAddress}/serverAdmin/admin/getProductsByMonth`, data)
         .subscribe(res => {
           const resp = JSON.parse(res["_body"]);
           console.log(resp);
@@ -943,7 +943,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
       const data = new URLSearchParams();
       data.append("idPlace", "-KqUfHv6pOigweWypUmH");
       this.http
-        .post(`http://${this.ipAddress}/admin/getProductsByMonth`, data)
+        .post(`http://${this.ipAddress}/serverAdmin/admin/getProductsByMonth`, data)
         .subscribe(res => {
           const resp = JSON.parse(res["_body"]);
           console.log(resp);
@@ -990,7 +990,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
       const data = new URLSearchParams();
       data.append("idPlace", "-KqUfHv6pOigweWypUmH");
       this.http
-        .post(`http://${this.ipAddress}/admin/getProductsByYear`, data)
+        .post(`http://${this.ipAddress}/serverAdmin/admin/getProductsByYear`, data)
         .subscribe(res => {
           const resp = JSON.parse(res["_body"]);
           console.log(resp);
@@ -1037,7 +1037,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
       const data = new URLSearchParams();
       data.append("idPlace", "-KqUfHv6pOigweWypUmH");
       this.http
-        .post(`http://${this.ipAddress}/admin/getProductsByYear`, data)
+        .post(`http://${this.ipAddress}/serverAdmin/admin/getProductsByYear`, data)
         .subscribe(res => {
           const resp = JSON.parse(res["_body"]);
           console.log(resp);
