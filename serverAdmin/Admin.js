@@ -253,6 +253,8 @@ getProductsByMonth = (req, res) => {
                         "times"
                       ] = val.val().quantity;
                     }
+                    console.log(k, key2, val.val());
+                    console.log('********');
                   });
                 });
               };
