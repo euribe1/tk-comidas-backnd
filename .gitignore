@@ -45,3 +45,26 @@ Thumbs.db
 # Admin Firebase
 /serverAdmin/node_modules
 firebase-debug.log
+
+Backups/
+CachedData/
+CachedExtensions/
+Cookies
+Cookies-journal
+Preferences
+User/
+languagepacks.json
+logs/
+machineid
+src/CachedExtensions/
+src/Cookies
+src/Cookies-journal
+src/Preferences
+src/User/
+src/app/globals.ts
+src/languagepacks.json
+src/logs/
+src/machineid
+src/storage.json
+storage.json
+

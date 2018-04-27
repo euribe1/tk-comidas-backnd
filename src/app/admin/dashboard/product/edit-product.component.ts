@@ -5,6 +5,7 @@ import { storage } from "firebase";
 
 import { ProductService } from "../../../services/products.service";
 import { resolve } from "url";
+import { Globals } from "../../../globals";
 
 @Component({
   selector: "app-edit-product",
@@ -15,12 +16,15 @@ export class EditProductComponent implements OnInit {
   product: any = {};
   idPlace: string;
   idProduct: string;
+  placeMenuDir: string = '';
   constructor(
     private router: Router,
     private productService: ProductService,
-    private af: AngularFireDatabase
+    private af: AngularFireDatabase,
+    private globals: Globals
   ) {
     this.idPlace = "-KqUfHv6pOigweWypUmH";
+    this.placeMenuDir = `${this.globals.environment['current'].name}/placeMenu`;    
   }
   ngOnInit() {
     (<any>document.querySelector(".img-ul-button input")).addEventListener(
@@ -31,7 +35,7 @@ export class EditProductComponent implements OnInit {
       this.product = this.productService.productSelected;
       this.idProduct = this.product.id;
       this.af
-        .object(`placeMenu/${this.idPlace}/${this.product.id}`)
+        .object(`${this.placeMenuDir}/${this.idPlace}/${this.product.id}`)
         .valueChanges()
         .subscribe(res => {
           this.product = res;
@@ -73,7 +77,7 @@ export class EditProductComponent implements OnInit {
     (<any>document.querySelector(".col2")).classList.add("opacity");
     const productRef = this.af.database
       .ref()
-      .child(`placeMenu/${this.idPlace}/${this.idProduct}`);
+      .child(`${this.placeMenuDir}/${this.idPlace}/${this.idProduct}`);
     if (this.product.productPhoto && this.product.productPhoto.name) {
       // Se actualizará imagen también
       const my = storage()

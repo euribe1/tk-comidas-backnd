@@ -38,7 +38,7 @@ export class UserDatabase {
   }
 
   // Connection to remote db.
-  private database = this.productAdminService.af.list("users", ref =>
+  private database = this.productAdminService.af.list("prod/users", ref =>
     ref.orderByChild("name")
   );
 

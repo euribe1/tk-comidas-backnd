@@ -17,7 +17,7 @@ export class SidenavComponent implements OnInit {
     this.authService.isLogged().subscribe(result => {
       if (result) {
         this.af
-          .object(`users/${result.uid}`)
+          .object(`prod/users/${result.uid}`)
           .valueChanges()
           .subscribe(elem => {
             this.user = elem;

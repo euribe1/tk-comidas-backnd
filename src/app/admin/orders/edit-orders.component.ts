@@ -11,6 +11,7 @@ import { storage } from 'firebase';
 import { OrderService } from '../../services/orders.service';
 import { DialogComponent } from '../dialog/dialog.component';
 import { MatDialog } from '@angular/material';
+import { Globals } from '../../globals';
 
 declare const google: any;
 
@@ -37,12 +38,19 @@ export class EditOrdersComponent implements OnInit {
   idPlace: string;
   totalPayment: number = 0;
   currency: string = '';
+  ordersGroupedByPlacesDir: string = '';
+  orderProductsDir: string = '';
+  placeMenuDir: string = '';
   constructor(
     private router: Router,
     private af: AngularFireDatabase,
     private orderService: OrderService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private globals: Globals
   ) {
+    this.ordersGroupedByPlacesDir = `${this.globals.environment['current'].name}/ordersGroupedByPlaces`;
+    this.orderProductsDir = `${this.globals.environment['current'].name}/orderProducts`;
+    this.placeMenuDir = `${this.globals.environment['current'].name}/placeMenu`;
     this.statusOrders = [
       'Pendiente',
       'Enviado',
@@ -52,7 +60,7 @@ export class EditOrdersComponent implements OnInit {
     ];
     this.idPlace = '-KqUfHv6pOigweWypUmH';
     this.orderRef = this.af.object(
-      `ordersGroupedByPlaces/${this.idPlace}/${
+      `${this.ordersGroupedByPlacesDir}/${this.idPlace}/${
         this.orderService.orderSelected.id
       }`
     );
@@ -99,7 +107,7 @@ export class EditOrdersComponent implements OnInit {
           this.calculateAndDisplayRoute(directionsService, directionsDisplay);
         }
         this.order = obj;
-        this.userRef = this.af.object(`users/${this.order.userId}`);
+        this.userRef = this.af.object(`prod/users/${this.order.userId}`);
         this.userRef.snapshotChanges().subscribe(data => {
           this.user = data.payload.val();
           this.user.email = data.payload.val().email ? this.user.email : '--';
@@ -107,7 +115,7 @@ export class EditOrdersComponent implements OnInit {
       }
     });
     this.productRef = this.af.list(
-      `orderProducts/${this.orderService.orderSelected.id}`
+      `${this.orderProductsDir}/${this.orderService.orderSelected.id}`
     );
     this.products = this.productRef.snapshotChanges().map(changes => {
       return changes.map(data => {
@@ -121,7 +129,7 @@ export class EditOrdersComponent implements OnInit {
           currency: ''
         };
         this.prodMenuRef = this.af.object(
-          `placeMenu/${this.idPlace}/${obj.key}`
+          `${this.placeMenuDir}/${this.idPlace}/${obj.key}`
         );
         this.prodMenuRef.snapshotChanges().subscribe(data => {
           const prodInfo = data.payload.val();
@@ -165,7 +173,7 @@ export class EditOrdersComponent implements OnInit {
         if (result === 'ok') {
           const ref = this.af.database
             .ref()
-            .child(`ordersGroupedByPlaces/${this.idPlace}/${key}`);
+            .child(`${this.ordersGroupedByPlacesDir}/${this.idPlace}/${key}`);
           let newStatus = this.order.orderStatus + 1;
           if (this.order.type === 'Recojo' && newStatus === 1) {
             newStatus = newStatus + 1;
@@ -211,7 +219,7 @@ export class EditOrdersComponent implements OnInit {
         if (result === 'ok') {
           this.af.database
             .ref()
-            .child(`ordersGroupedByPlaces/${this.idPlace}/${key}`)
+            .child(`${this.ordersGroupedByPlacesDir}/${this.idPlace}/${key}`)
             .update({
               orderStatus: 4
             })

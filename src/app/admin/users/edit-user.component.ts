@@ -72,7 +72,7 @@ export class EditUserComponent implements OnInit, AfterViewInit {
     if (this.userService.userSelected) {
       this.idUser = this.userService.userSelected.id;
       this.af
-        .object(`users/${this.idUser}`)
+        .object(`prod/users/${this.idUser}`)
         .valueChanges()
         .subscribe(res => {
           this.user = res;
@@ -127,12 +127,12 @@ export class EditUserComponent implements OnInit, AfterViewInit {
         (<any>document.querySelector(".spinner-div")).style.display = "flex";
         (<any>document.querySelector(".col1")).classList.add("opacity");
         (<any>document.querySelector(".col2")).classList.add("opacity");
-        const userRef = this.af.database.ref().child(`users/${this.idUser}`);
+        const userRef = this.af.database.ref().child(`prod/users/${this.idUser}`);
         if (this.user.profileImagePath && this.user.profileImagePath.name) {
           // Se actualizará imagen también
           const my = storage()
             .ref()
-            .child(`users/${this.user.profileImagePath.name}`);
+            .child(`prod/users/${this.user.profileImagePath.name}`);
           my
             .put(this.user.profileImagePath.blobSrc)
             .then(res => {

@@ -47,6 +47,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   productMostWanted: Array<any> = [];
   productMostWantedByMonth: Array<any> = [];
   productMostWantedByYear: Array<any> = [];
+  ordersGroupedByPlacesDir: string = 'prod/ordersGroupedByPlaces';
   months = [
     "Ene",
     "Feb",
@@ -83,18 +84,18 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   }
   ngOnInit() {
     this.orders = this.af.list(
-      `ordersGroupedByPlaces/-KqUfHv6pOigweWypUmH`,
+      `${this.ordersGroupedByPlacesDir}/-KqUfHv6pOigweWypUmH`,
       ref => ref.orderByChild("orderStatus")
     );
     this.ordersRecieved = this.af.list(
-      `ordersGroupedByPlaces/-KqUfHv6pOigweWypUmH`,
+      `${this.ordersGroupedByPlacesDir}/-KqUfHv6pOigweWypUmH`,
       ref => ref.orderByChild("orderStatus").equalTo(3)
     );
     this.ordersCanceled = this.af.list(
-      `ordersGroupedByPlaces/-KqUfHv6pOigweWypUmH`,
+      `${this.ordersGroupedByPlacesDir}/-KqUfHv6pOigweWypUmH`,
       ref => ref.orderByChild("orderStatus").equalTo(4)
     );
-    this.usersRegistered = this.af.list(`users`, ref =>
+    this.usersRegistered = this.af.list(`prod/users`, ref =>
       ref.orderByChild("name")
     );
     this.displayedColumns = ["position", "name"];

@@ -86,7 +86,7 @@ export class AuthComponent implements OnInit {
       this.passFormControl.touched = true;
       this.busy = false;
     } else if (this.loginParams.email && this.loginParams.password && this.loginParams.email.search('@') === -1) {
-      this.af.list('/users', ref => {
+      this.af.list('/prod/users', ref => {
         return ref.orderByChild('nickname').equalTo(this.loginParams.email);
       })
         .valueChanges()

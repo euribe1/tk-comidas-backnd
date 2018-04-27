@@ -31,6 +31,7 @@ export interface Order {
 
 @Injectable()
 export class OrderDatabase {
+  ordersGroupedByPlacesDir: string = 'prod/ordersGroupedByPlaces';
   idPlace = "-KqUfHv6pOigweWypUmH";
   statusOrders = [
     "Pendiente",
@@ -49,7 +50,7 @@ export class OrderDatabase {
 
   // Connection to remote db.
   private database = this.orderAdminService.af.list(
-    `ordersGroupedByPlaces/${this.idPlace}`,
+    `${this.ordersGroupedByPlacesDir}/${this.idPlace}`,
     ref => ref.orderByChild("orderStatus")
   );
 
@@ -83,7 +84,7 @@ export class OrderDatabase {
           obj.lat = lat;
           obj.lng = lng;
           this.orderAdminService.af
-            .object(`users/${data.payload.val().userId}`)
+            .object(`prod/users/${data.payload.val().userId}`)
             .valueChanges()
             .subscribe(resp => {
               if (resp) {

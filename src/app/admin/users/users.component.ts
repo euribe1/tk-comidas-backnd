@@ -157,7 +157,7 @@ export class UsersComponent implements OnInit {
                 if (res.deleted) {
                   const userRef = this.af.database
                     .ref()
-                    .child(`users/${user.id}`);
+                    .child(`prod/users/${user.id}`);
                   userRef
                     .remove()
                     .then(res => {

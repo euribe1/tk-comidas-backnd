@@ -120,10 +120,10 @@ export class CreateUserComponent implements OnInit, AfterViewInit {
             const res = JSON.parse(resp["_body"]);
             if (res.created) {
               const userId = res.userId;
-              const userRef = this.af.database.ref().child("users");
+              const userRef = this.af.database.ref().child("prod/users");
               const storageRef = storage()
                 .ref()
-                .child(`users/${this.user.profileImagePath.name}`);
+                .child(`prod/users/${this.user.profileImagePath.name}`);
               storageRef
                 .put(this.user.profileImagePath.blobSrc)
                 .then(res => {

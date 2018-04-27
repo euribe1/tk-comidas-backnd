@@ -20,6 +20,7 @@ import "rxjs/add/operator/map";
 import "rxjs/add/operator/debounceTime";
 import "rxjs/add/operator/distinctUntilChanged";
 import "rxjs/add/observable/combineLatest";
+import { Globals } from "../../globals";
 
 export interface Element {
   name: string;
@@ -53,6 +54,7 @@ export class DashboardComponent implements OnInit {
   currencyFilter = new FormControl();
   stockFilter = new FormControl();
   dataLength: any;
+  placeMenuDir: string = '';
   @ViewChild(MatPaginator) paginator: MatPaginator;
   constructor(
     private af: AngularFireDatabase,
@@ -61,14 +63,16 @@ export class DashboardComponent implements OnInit {
     private router: Router,
     private excelService: ExcelService,
     private dialog: MatDialog,
-    private authService: AuthService
+    private authService: AuthService,
+    private globals: Globals
   ) {
+    this.placeMenuDir = `${this.globals.environment['current'].name}/placeMenu`;
     this.displayedColumns = ["name", "price", "ingredients", "stock", "action"];
     this.idPlace = "-KqUfHv6pOigweWypUmH";
     this.authService.isLogged().subscribe(result => {
       if (result) {
         this.af
-          .object(`users/${result.uid}`)
+          .object(`prod/users/${result.uid}`)
           .valueChanges()
           .subscribe(elem => {
             if (elem["role"] && elem["role"] === "admin") {
@@ -167,7 +171,7 @@ export class DashboardComponent implements OnInit {
         if (product && product.id) {
           const productRef = this.af.database
             .ref()
-            .child(`placeMenu/${this.idPlace}/${product.id}`);
+            .child(`${this.placeMenuDir}/${this.idPlace}/${product.id}`);
           productRef
             .remove()
             .then(res => {
@@ -193,7 +197,7 @@ export class DashboardComponent implements OnInit {
     if (product) {
       const productRef = this.af.database
         .ref()
-        .child(`placeMenu/${this.idPlace}/${product.id}`);
+        .child(`${this.placeMenuDir}/${this.idPlace}/${product.id}`);
       productRef
         .update({
           hiddenProduct: true
@@ -208,7 +212,7 @@ export class DashboardComponent implements OnInit {
     if (product) {
       const productRef = this.af.database
         .ref()
-        .child(`placeMenu/${this.idPlace}/${product.id}`);
+        .child(`${this.placeMenuDir}/${this.idPlace}/${product.id}`);
       productRef
         .update({
           hiddenProduct: false

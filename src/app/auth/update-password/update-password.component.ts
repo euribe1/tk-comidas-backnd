@@ -44,7 +44,7 @@ export class UpdatePasswordComponent implements OnInit {
   newPswdMatcher: any;
   errorMessage: string = "";
   busy: boolean;
-  ipAddress: string = "40.121.85.209";
+  ipAddress: string = "127.0.0.1:4200";
   constructor(
     private http: Http,
     private router: Router,

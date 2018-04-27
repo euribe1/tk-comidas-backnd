@@ -25,6 +25,8 @@ import { DialogComponent } from "./admin/dialog/dialog.component";
 import { OrderService, OrderDatabase } from "./services/orders.service";
 import { ExcelService } from "./services/excel-exporter.service";
 
+import {Globals} from './globals';
+
 export const firebaseConfig = {
   apiKey: "AIzaSyDfQGosQ7EZVhG7D3KumNzAxdyryRuOjtQ",
   authDomain: "tkcomidas-6ae27.firebaseapp.com",
@@ -46,6 +48,7 @@ export const firebaseConfig = {
     AuthModule
   ],
   providers: [
+    Globals,
     AngularFireDatabase,
     AuthService,
     MyGuard,

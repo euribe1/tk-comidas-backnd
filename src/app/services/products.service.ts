@@ -10,23 +10,26 @@ import "rxjs/add/observable/of";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import "rxjs/add/observable/merge";
 import "rxjs/add/operator/map";
+import { Globals } from "../globals";
 
 @Injectable()
 export class ProductService {
   productSelected: any;
   idPlace: string;
+  placeMenuDir: string = '';  
   private productsData$: AngularFireList<Element[]>;
-  constructor(public af: AngularFireDatabase) {
+  constructor(public af: AngularFireDatabase, private globals: Globals) {
     this.idPlace = "-KqZS_VuwLviXXtKDWfx";
+    this.placeMenuDir = `${this.globals.environment['current'].name}/placeMenu`;    
   }
   public getProductsByPlace(idPlace) {
-    return this.af.list(`placeMenu/${idPlace}`, ref =>
+    return this.af.list(`${this.placeMenuDir}/${idPlace}`, ref =>
       ref.orderByChild("name")
     );
   }
   public createProduct(idPlace, product) {
     return new Promise((resolve, reject) => {
-      const productRef = this.af.database.ref().child(`placeMenu/${idPlace}`);
+      const productRef = this.af.database.ref().child(`${this.placeMenuDir}/${idPlace}`);
       const my = storage()
         .ref()
         .child(`productos/${product.productPhoto.name}`);
@@ -52,7 +55,7 @@ export class ProductService {
   public updateProduct(idPlace, product) {
     const productRef = this.af.database
       .ref()
-      .child(`placeMenu/${idPlace}/${product.id}`);
+      .child(`${this.placeMenuDir}/${idPlace}/${product.id}`);
     productRef
       .update({
         name: product.name,
@@ -64,12 +67,12 @@ export class ProductService {
       .catch(error => console.log(error));
   }
   public removeProduct(idPlace, idProduct) {
-    const productRef = this.af.database.ref().child(`placeMenu/${idPlace}`);
+    const productRef = this.af.database.ref().child(`${this.placeMenuDir}/${idPlace}`);
     productRef.remove(idProduct).catch(error => console.log(error));
   }
   public getProductById(idProduct) {
     this.af
-      .object(`placeMenu/${this.idPlace}/${idProduct}`)
+      .object(`${this.placeMenuDir}/${this.idPlace}/${idProduct}`)
       .valueChanges()
       .subscribe(res => {
         this.productSelected = res;
@@ -90,6 +93,7 @@ export interface Element {
 
 @Injectable()
 export class ProductDatabase {
+  placeMenuDir: string = 'prod/placeMenu';  
   /* Stream that emits whenever the data has been modified. */
   public dataChange: BehaviorSubject<Element[]> = new BehaviorSubject<
     Element[]
@@ -100,7 +104,7 @@ export class ProductDatabase {
 
   // Connection to remote db.
   private database = this.productAdminService.af.list(
-    "placeMenu/-KqUfHv6pOigweWypUmH",
+    `${this.placeMenuDir}/-KqUfHv6pOigweWypUmH`,
     ref => ref.orderByChild("name")
   );
 
