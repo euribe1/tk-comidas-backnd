@@ -10,6 +10,7 @@ import "rxjs/add/observable/of";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import "rxjs/add/observable/merge";
 import "rxjs/add/operator/map";
+import { Globals } from "../globals";
 
 @Injectable()
 export class OrderService {
@@ -31,7 +32,8 @@ export interface Order {
 
 @Injectable()
 export class OrderDatabase {
-  ordersGroupedByPlacesDir: string = 'prod/ordersGroupedByPlaces';
+  userDir: string = '';
+  ordersGroupedByPlacesDir: string = `${this.globals.environment["current"].name}/ordersGroupedByPlaces`;
   idPlace = "-KqUfHv6pOigweWypUmH";
   statusOrders = [
     "Pendiente",
@@ -58,7 +60,8 @@ export class OrderDatabase {
     return this.database;
   }
 
-  constructor(private orderAdminService: OrderService) {
+  constructor(private orderAdminService: OrderService, private globals: Globals) {
+    this.userDir = `${this.globals.environment["current"].name}/users`;
     let items = new Observable<Order[]>();
     items = this.getOrders()
       .snapshotChanges()
@@ -84,7 +87,7 @@ export class OrderDatabase {
           obj.lat = lat;
           obj.lng = lng;
           this.orderAdminService.af
-            .object(`prod/users/${data.payload.val().userId}`)
+            .object(`${this.userDir}/${data.payload.val().userId}`)
             .valueChanges()
             .subscribe(resp => {
               if (resp) {

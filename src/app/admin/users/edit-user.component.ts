@@ -12,6 +12,7 @@ import {
 } from "@angular/forms";
 import { DialogComponent } from "../dialog/dialog.component";
 import { MatDialog } from "@angular/material";
+import { Globals } from "../../globals";
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(
@@ -44,11 +45,13 @@ export class EditUserComponent implements OnInit, AfterViewInit {
   nicknameMatcher: any;
   dniFormControl: any;
   dniMatcher: any;
+  userDir: string = '';
   constructor(
     private router: Router,
     private af: AngularFireDatabase,
     private userService: UserService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private globals: Globals
   ) {}
   ngAfterViewInit() {
     setTimeout(() => {
@@ -61,6 +64,7 @@ export class EditUserComponent implements OnInit, AfterViewInit {
     }, 0);
   }
   ngOnInit() {
+    this.userDir = `${this.globals.environment["current"].name}/users`;
     this.nameFormControl = new FormControl("", [Validators.required]);
     this.lastnameFormControl = new FormControl("", [Validators.required]);
     this.nicknameFormControl = new FormControl("", [Validators.required]);
@@ -72,7 +76,7 @@ export class EditUserComponent implements OnInit, AfterViewInit {
     if (this.userService.userSelected) {
       this.idUser = this.userService.userSelected.id;
       this.af
-        .object(`prod/users/${this.idUser}`)
+        .object(`${this.userDir}/${this.idUser}`)
         .valueChanges()
         .subscribe(res => {
           this.user = res;
@@ -127,12 +131,12 @@ export class EditUserComponent implements OnInit, AfterViewInit {
         (<any>document.querySelector(".spinner-div")).style.display = "flex";
         (<any>document.querySelector(".col1")).classList.add("opacity");
         (<any>document.querySelector(".col2")).classList.add("opacity");
-        const userRef = this.af.database.ref().child(`prod/users/${this.idUser}`);
+        const userRef = this.af.database.ref().child(`${this.userDir}/${this.idUser}`);
         if (this.user.profileImagePath && this.user.profileImagePath.name) {
           // Se actualizará imagen también
           const my = storage()
             .ref()
-            .child(`prod/users/${this.user.profileImagePath.name}`);
+            .child(`${this.userDir}/${this.user.profileImagePath.name}`);
           my
             .put(this.user.profileImagePath.blobSrc)
             .then(res => {

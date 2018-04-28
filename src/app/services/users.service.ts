@@ -10,6 +10,7 @@ import "rxjs/add/observable/of";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import "rxjs/add/observable/merge";
 import "rxjs/add/operator/map";
+import { Globals } from "../globals";
 
 @Injectable()
 export class UserService {
@@ -30,6 +31,7 @@ export interface User {
 
 @Injectable()
 export class UserDatabase {
+  userDir: string = '';
   /* Stream that emits whenever the data has been modified. */
   public dataFilteredLength: number;
   public dataChange: BehaviorSubject<User[]> = new BehaviorSubject<User[]>([]);
@@ -37,16 +39,8 @@ export class UserDatabase {
     return this.dataChange.value;
   }
 
-  // Connection to remote db.
-  private database = this.productAdminService.af.list("prod/users", ref =>
-    ref.orderByChild("name")
-  );
-
-  public getUsers(): AngularFireList<any> {
-    return this.database;
-  }
-
-  constructor(private productAdminService: UserService) {
+  constructor(private productAdminService: UserService, private globals: Globals) {
+    this.userDir = `${this.globals.environment["current"].name}/users`;
     let items = new Observable<User[]>();
     items = this.getUsers()
       .snapshotChanges()
@@ -79,6 +73,15 @@ export class UserDatabase {
         });
       });
     items.subscribe(arr => this.dataChange.next(arr));
+  }
+
+  // Connection to remote db.
+  private database = this.productAdminService.af.list(`${this.globals.environment["current"].name}/users`, ref =>
+    ref.orderByChild("name")
+  );
+
+  public getUsers(): AngularFireList<any> {
+    return this.database;
   }
 }
 

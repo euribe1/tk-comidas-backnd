@@ -13,6 +13,7 @@ import { storage } from "firebase";
 import { DialogComponent } from "../dialog/dialog.component";
 import { MatDialog } from "@angular/material";
 import { Http, URLSearchParams } from "@angular/http";
+import { Globals } from "../../globals";
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(
@@ -47,12 +48,14 @@ export class CreateUserComponent implements OnInit, AfterViewInit {
   dniMatcher: any;
   idUser: string;
   ipAddress: string = "40.121.85.209";
+  userDir: string = '';
   constructor(
     private router: Router,
     private af: AngularFireDatabase,
     private dialog: MatDialog,
     private angularFireAuth: AngularFireAuth,
-    private http: Http
+    private http: Http,
+    private globals: Globals
   ) {}
   ngAfterViewInit() {
     setTimeout(() => {
@@ -64,6 +67,7 @@ export class CreateUserComponent implements OnInit, AfterViewInit {
     }, 2000);
   }
   ngOnInit() {
+    this.userDir = `${this.globals.environment['current'].name}/users`;
     this.nameFormControl = new FormControl("", [Validators.required]);
     this.lastnameFormControl = new FormControl("", [Validators.required]);
     this.nicknameFormControl = new FormControl("", [Validators.required]);
@@ -120,10 +124,10 @@ export class CreateUserComponent implements OnInit, AfterViewInit {
             const res = JSON.parse(resp["_body"]);
             if (res.created) {
               const userId = res.userId;
-              const userRef = this.af.database.ref().child("prod/users");
+              const userRef = this.af.database.ref().child(`${this.userDir}`);
               const storageRef = storage()
                 .ref()
-                .child(`prod/users/${this.user.profileImagePath.name}`);
+                .child(`${this.userDir}/${this.user.profileImagePath.name}`);
               storageRef
                 .put(this.user.profileImagePath.blobSrc)
                 .then(res => {

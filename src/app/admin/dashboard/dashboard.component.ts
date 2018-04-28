@@ -55,6 +55,7 @@ export class DashboardComponent implements OnInit {
   stockFilter = new FormControl();
   dataLength: any;
   placeMenuDir: string = '';
+  userDir: string = '';
   @ViewChild(MatPaginator) paginator: MatPaginator;
   constructor(
     private af: AngularFireDatabase,
@@ -67,12 +68,13 @@ export class DashboardComponent implements OnInit {
     private globals: Globals
   ) {
     this.placeMenuDir = `${this.globals.environment['current'].name}/placeMenu`;
+    this.userDir = `${this.globals.environment['current'].name}/users`;
     this.displayedColumns = ["name", "price", "ingredients", "stock", "action"];
     this.idPlace = "-KqUfHv6pOigweWypUmH";
     this.authService.isLogged().subscribe(result => {
       if (result) {
         this.af
-          .object(`prod/users/${result.uid}`)
+          .object(`${this.userDir}/${result.uid}`)
           .valueChanges()
           .subscribe(elem => {
             if (elem["role"] && elem["role"] === "admin") {

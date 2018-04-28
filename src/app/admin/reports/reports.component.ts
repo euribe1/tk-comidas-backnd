@@ -3,6 +3,7 @@ import Chart from "chart.js";
 import { MatTableDataSource } from "@angular/material";
 import { AngularFireDatabase, AngularFireList } from "angularfire2/database";
 import { Http, URLSearchParams } from "@angular/http";
+import { Globals } from "../../globals";
 
 const ELEMENT_DATA: Element[] = [
   { position: 1, name: "--" },
@@ -47,7 +48,8 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   productMostWanted: Array<any> = [];
   productMostWantedByMonth: Array<any> = [];
   productMostWantedByYear: Array<any> = [];
-  ordersGroupedByPlacesDir: string = 'prod/ordersGroupedByPlaces';
+  ordersGroupedByPlacesDir: string = '';
+  userDir: string = '';
   months = [
     "Ene",
     "Feb",
@@ -62,7 +64,10 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     "Nov",
     "Dic"
   ];
-  constructor(public af: AngularFireDatabase, private http: Http) {}
+  constructor(public af: AngularFireDatabase, private http: Http, private globals: Globals) {
+    this.ordersGroupedByPlacesDir = `${this.globals.environment['current'].name}/ordersGroupedByPlaces`;
+    this.userDir = `${this.globals.environment['current'].name}/users`;
+  }
   ngAfterViewInit() {
     setTimeout(() => {
       this.ctx = document.getElementById("chart1");
@@ -95,7 +100,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
       `${this.ordersGroupedByPlacesDir}/-KqUfHv6pOigweWypUmH`,
       ref => ref.orderByChild("orderStatus").equalTo(4)
     );
-    this.usersRegistered = this.af.list(`prod/users`, ref =>
+    this.usersRegistered = this.af.list(`${this.userDir}`, ref =>
       ref.orderByChild("name")
     );
     this.displayedColumns = ["position", "name"];

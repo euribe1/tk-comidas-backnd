@@ -92,8 +92,7 @@ export interface Element {
 }
 
 @Injectable()
-export class ProductDatabase {
-  placeMenuDir: string = 'prod/placeMenu';  
+export class ProductDatabase { 
   /* Stream that emits whenever the data has been modified. */
   public dataChange: BehaviorSubject<Element[]> = new BehaviorSubject<
     Element[]
@@ -104,7 +103,7 @@ export class ProductDatabase {
 
   // Connection to remote db.
   private database = this.productAdminService.af.list(
-    `${this.placeMenuDir}/-KqUfHv6pOigweWypUmH`,
+    `${this.globals.environment["current"].name}/placeMenu/-KqUfHv6pOigweWypUmH`,
     ref => ref.orderByChild("name")
   );
 
@@ -112,7 +111,7 @@ export class ProductDatabase {
     return this.database;
   }
 
-  constructor(private productAdminService: ProductService) {
+  constructor(private productAdminService: ProductService, private globals: Globals) {
     let items = new Observable<Element[]>();
     items = this.getProducts()
       .snapshotChanges()

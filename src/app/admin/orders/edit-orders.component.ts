@@ -41,6 +41,7 @@ export class EditOrdersComponent implements OnInit {
   ordersGroupedByPlacesDir: string = '';
   orderProductsDir: string = '';
   placeMenuDir: string = '';
+  userDir: string = '';
   constructor(
     private router: Router,
     private af: AngularFireDatabase,
@@ -51,6 +52,7 @@ export class EditOrdersComponent implements OnInit {
     this.ordersGroupedByPlacesDir = `${this.globals.environment['current'].name}/ordersGroupedByPlaces`;
     this.orderProductsDir = `${this.globals.environment['current'].name}/orderProducts`;
     this.placeMenuDir = `${this.globals.environment['current'].name}/placeMenu`;
+    this.userDir = `${this.globals.environment['current'].name}/users`;
     this.statusOrders = [
       'Pendiente',
       'Enviado',
@@ -107,7 +109,7 @@ export class EditOrdersComponent implements OnInit {
           this.calculateAndDisplayRoute(directionsService, directionsDisplay);
         }
         this.order = obj;
-        this.userRef = this.af.object(`prod/users/${this.order.userId}`);
+        this.userRef = this.af.object(`${this.userDir}/${this.order.userId}`);
         this.userRef.snapshotChanges().subscribe(data => {
           this.user = data.payload.val();
           this.user.email = data.payload.val().email ? this.user.email : '--';

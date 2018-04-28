@@ -25,6 +25,7 @@ import "rxjs/add/operator/map";
 import "rxjs/add/operator/debounceTime";
 import "rxjs/add/operator/distinctUntilChanged";
 import "rxjs/add/observable/combineLatest";
+import { Globals } from "../../globals";
 
 export interface User {
   nickname: string;
@@ -60,6 +61,7 @@ export class UsersComponent implements OnInit {
   myDateToFromFilter = new FormControl();
   dataLength: any;
   ipAddress: string = "40.121.85.209";
+  userDir: string = '';
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
@@ -69,9 +71,11 @@ export class UsersComponent implements OnInit {
     public userDatabase: UserDatabase,
     private dialog: MatDialog,
     private excelService: ExcelService,
-    private http: Http
+    private http: Http,
+    private globals: Globals
   ) {
     this.displayedColumns = ["name", "nickname", "email", "date", "action"];
+    this.userDir = `${this.globals.environment["current"].name}/users`;
   }
 
   ngOnInit() {
@@ -157,7 +161,7 @@ export class UsersComponent implements OnInit {
                 if (res.deleted) {
                   const userRef = this.af.database
                     .ref()
-                    .child(`prod/users/${user.id}`);
+                    .child(`${this.userDir}/${user.id}`);
                   userRef
                     .remove()
                     .then(res => {

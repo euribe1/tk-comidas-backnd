@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 
 import { AuthService } from '../services/auth.service';
 import { AppRoutingModule } from '../app-routing.module';
+import { Globals } from '../globals';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -30,11 +31,14 @@ export class AuthComponent implements OnInit {
   activeResetPsw: boolean;
   errorMessage: string = '';
   busy: boolean;
+  userDir: string = '';
   constructor(
     private authService: AuthService,
     private af: AngularFireDatabase,
     private angularFireAuth: AngularFireAuth,
-    private router: Router) {
+    private router: Router,
+    private globals: Globals
+  ) {
     this.authService.isLogged()
       .subscribe(result => {
         if (result && result.uid) {
@@ -55,6 +59,7 @@ export class AuthComponent implements OnInit {
     this.matcher_ = new MyErrorStateMatcher();
     this.active = false;
     this.activeResetPsw = false;
+    this.userDir = `${this.globals.environment["current"].name}/users`;
   }
 
   cancelResetPassword() {
@@ -86,7 +91,7 @@ export class AuthComponent implements OnInit {
       this.passFormControl.touched = true;
       this.busy = false;
     } else if (this.loginParams.email && this.loginParams.password && this.loginParams.email.search('@') === -1) {
-      this.af.list('/prod/users', ref => {
+      this.af.list(`${this.userDir}`, ref => {
         return ref.orderByChild('nickname').equalTo(this.loginParams.email);
       })
         .valueChanges()
