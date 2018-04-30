@@ -39,7 +39,7 @@ updateUser = (req, res) => {
     .then(resp => {
       const user = resp;
       const db = admin.database();
-      const ref = db.ref(`users/${user.uid}`);
+      const ref = db.ref(`prod/users/${user.uid}`);
       ref.once(
         "value",
         snapshot => {
@@ -102,248 +102,220 @@ getLast5Days = currentDate => {
   });
 };
 
-getLast5ProductsByDay = (req, res) => {
-  const db = admin.database();
-  const ref = db.ref(`ordersGroupedByPlaces/${req.body.idPlace}`);
-  const jsonMostWanted = {};
-  let count = 0;
-  const newDate = new Date();
-  const element = `${("00" + newDate.getDate()).slice(-2)}-${
-    months[newDate.getMonth()]
-  }-${("" + newDate.getFullYear()).slice(-4)}`;
-  const array = [];
-  ref.on("value", data => {
-    return new Promise((resolve, reject) => {
-      data.forEach(elem => {
-        // Iterate OrdersGroupedByPlaces
-        count++;
-        if (elem.val().timestamp !== undefined) {
-          const myDate =
-            elem.val().timestamp.split(" ")[0] +
-            " " +
-            elem.val().timestamp.split(" ")[1];
-          const date = new Date(myDate);
-          const arr = element.split("-");
-          const index = months.findIndex(function(el) {
-            return el === arr[1];
-          });
-          if (
-            date.getDate() === parseInt(arr[0]) &&
-            date.getMonth() === index &&
-            date.getFullYear() === parseInt(arr[2])
-          ) {
-            let key1 = elem.key;
-            array.push(key1);
-          }
-        }
-        if (count === data.numChildren()) {
-          if (array.length === 0) {
-            reject();
-          }
-          resolve(array);
-        }
-      });
-    })
-      .then(array => {
-        return new Promise((resolve, rejected) => {
-          array.forEach((k, index) => {
-            let cont = 0;
-            db.ref(`orderProducts/${k}`).on("value", async dat => {
-              // Get OrdersProducts by key1
-              const getData = async () => {
-                await dat.forEach(elem2 => {
-                  // Iterate details OrdersProducts
-                  cont++;
-                  let key2 = elem2.key;
-                  db.ref(`orderProducts/${k}/${key2}`).on("value", val => {
-                    // Get details odersProducts by key1, key2
-                    if (jsonMostWanted[`${val.key}`]) {
-                      jsonMostWanted[`${val.key}`].name = val.val().name;
-                    } else {
-                      jsonMostWanted[`${val.key}`] = {};
-                      jsonMostWanted[`${val.key}`]["name"] = val.val().name;
-                    }
-                    if (jsonMostWanted[`${val.key}`].times) {
-                      jsonMostWanted[`${val.key}`].times += val.val().quantity;
-                    } else {
-                      jsonMostWanted[`${val.key}`][
-                        "times"
-                      ] = val.val().quantity;
-                    }
-                  });
-                });
-              };
-              await getData();
-              if (index === array.length - 1) {
-                resolve(jsonMostWanted);
-              }
-            });
-          });
-        });
-      })
-      .then(json => res.status(200).send({ data: json }))
-      .catch(error => res.send({ data: {}, error: error }));
-  });
+getLast5ProductsByDay = async (req, res) => {
+  try {
+    const db = admin.database();
+    const ref = db.ref(`prod/ordersGroupedByPlaces/${req.body.idPlace}`);
+    const newDate = new Date();
+    const element = `${("00" + newDate.getDate()).slice(-2)}-${
+      months[newDate.getMonth()]
+    }-${("" + newDate.getFullYear()).slice(-4)}`;
+    const array = [];
+    
+    let orders = await getProducts(req, res, ref, element, array);
+    let filteredOrders = await getFilteredOrders(element, orders).then(val => val).catch(error => error);
+    let demandProducts = {};
+    if (filteredOrders.length > 0) {
+      demandProducts = await getDemandProducts(db, filteredOrders);
+      res.status(200).send({ data: demandProducts });
+    }
+    else {
+      res.status(200).send({ data: {} });
+    }
+  } catch(error) {
+    res.send({ data: {}, error: error });
+  }
 };
 
-getProductsByMonth = (req, res) => {
-  const db = admin.database();
-  const ref = db.ref(`ordersGroupedByPlaces/${req.body.idPlace}`);
-  const jsonMostWanted = {};
-  let count = 0;
-  const newDate = new Date();
-  const element = `${months[newDate.getMonth()]}-${(
-    "0000" + newDate.getFullYear()
-  ).slice(-4)}`;
-  const array = [];
-  ref.on("value", data => {
-    return new Promise((resolve, reject) => {
-      data.forEach(elem => {
-        // Iterate OrdersGroupedByPlaces
-        count++;
-        if (elem.val().timestamp !== undefined) {
-          const myDate =
-            elem.val().timestamp.split(" ")[0] +
-            " " +
-            elem.val().timestamp.split(" ")[1];
-          const date = new Date(myDate);
-          const arr = element.split("-");
-          const index = months.findIndex(function(el) {
-            return el === arr[0];
-          });
-          if (
-            date.getMonth() === index &&
-            date.getFullYear() === parseInt(arr[1])
-          ) {
-            let key1 = elem.key;
-            array.push(key1);
-          }
-        }
-        if (count === data.numChildren()) {
-          if (array.length === 0) {
-            reject();
-          }
-          resolve(array);
-        }
-      });
-    })
-      .then(array => {
-        return new Promise((resolve, rejected) => {
-          array.forEach((k, index) => {
-            let cont = 0;
-            db.ref(`orderProducts/${k}`).on("value", async dat => {
-              // Get OrdersProducts by key1
-              const getData = async () => {
-                await dat.forEach(elem2 => {
-                  // Iterate details OrdersProducts
-                  cont++;
-                  let key2 = elem2.key;
-                  db.ref(`orderProducts/${k}/${key2}`).on("value", val => {
-                    // Get details odersProducts by key1, key2
-                    if (jsonMostWanted[`${val.key}`]) {
-                      jsonMostWanted[`${val.key}`].name = val.val().name;
-                    } else {
-                      jsonMostWanted[`${val.key}`] = {};
-                      jsonMostWanted[`${val.key}`]["name"] = val.val().name;
-                    }
-                    if (jsonMostWanted[`${val.key}`].times) {
-                      jsonMostWanted[`${val.key}`].times += val.val().quantity;
-                    } else {
-                      jsonMostWanted[`${val.key}`][
-                        "times"
-                      ] = val.val().quantity;
-                    }
-                    console.log(k, key2, val.val());
-                    console.log('********');
-                  });
-                });
-              };
-              await getData();
-              if (index === array.length - 1) {
-                resolve(jsonMostWanted);
-              }
-            });
-          });
-        });
-      })
-      .then(json => res.status(200).send({ data: json }))
-      .catch(error => res.send({ data: {}, error: error }));
-  });
+getProducts = async (req, res, ref, element, array) => {
+  try {
+    let orders = await ref.once("value").then(data => {
+      return data;
+    });
+    return orders;
+  }
+  catch (error) {
+    res.send({ data: {}, error: error })
+  }
 };
 
-getProductsByYear = (req, res) => {
-  const db = admin.database();
-  const ref = db.ref(`ordersGroupedByPlaces/${req.body.idPlace}`);
-  const jsonMostWanted = {};
-  let count = 0;
-  const newDate = new Date();
-  const element = `${("0000" + newDate.getFullYear()).slice(-4)}`;
-  const array = [];
-  ref.on("value", data => {
-    return new Promise((resolve, reject) => {
-      data.forEach(elem => {
-        // Iterate OrdersGroupedByPlaces
-        count++;
-        if (elem.val().timestamp !== undefined) {
-          const myDate =
-            elem.val().timestamp.split(" ")[0] +
-            " " +
-            elem.val().timestamp.split(" ")[1];
-          const date = new Date(myDate);
-          const arr = element.split("-");
-          if (date.getFullYear() === parseInt(arr[0])) {
-            let key1 = elem.key;
-            array.push(key1);
-          }
-        }
-        if (count === data.numChildren()) {
-          if (array.length === 0) {
-            reject();
-          }
-          resolve(array);
-        }
-      });
-    })
-      .then(array => {
-        return new Promise((resolve, rejected) => {
-          array.forEach((k, index) => {
-            let cont = 0;
-            db.ref(`orderProducts/${k}`).on("value", async dat => {
-              // Get OrdersProducts by key1
-              const getData = async () => {
-                await dat.forEach(elem2 => {
-                  // Iterate details OrdersProducts
-                  cont++;
-                  let key2 = elem2.key;
-                  db.ref(`orderProducts/${k}/${key2}`).on("value", val => {
-                    // Get details odersProducts by key1, key2
-                    if (jsonMostWanted[`${val.key}`]) {
-                      jsonMostWanted[`${val.key}`].name = val.val().name;
-                    } else {
-                      jsonMostWanted[`${val.key}`] = {};
-                      jsonMostWanted[`${val.key}`]["name"] = val.val().name;
-                    }
-                    if (jsonMostWanted[`${val.key}`].times) {
-                      jsonMostWanted[`${val.key}`].times += val.val().quantity;
-                    } else {
-                      jsonMostWanted[`${val.key}`][
-                        "times"
-                      ] = val.val().quantity;
-                    }
-                  });
-                });
-              };
-              await getData();
-              if (index === array.length - 1) {
-                resolve(jsonMostWanted);
-              }
-            });
-          });
+getFilteredOrders = (element, orders) => {
+  return new Promise((resolve, reject) => {
+    let myOrders = orders.val();
+    let sizeOrders = orders.numChildren();
+    let count = 0;
+    const array = [];
+    for (let [key, elem] of Object.entries(myOrders)) {
+      // Iterate OrdersGroupedByPlaces
+      count++;
+      if (elem.timestamp !== undefined) {
+        const myDate =
+          elem.timestamp.split(" ")[0] +
+          " " +
+          elem.timestamp.split(" ")[1];
+        const date = new Date(myDate);
+        const arr = element.split("-");
+        const index = months.findIndex(function(el) {
+          return el === arr[1];
         });
-      })
-      .then(json => res.status(200).send({ data: json }))
-      .catch(error => res.send({ data: {}, error: error }));
-  });
+        if (
+          date.getDate() === parseInt(arr[0]) &&
+          date.getMonth() === index &&
+          date.getFullYear() === parseInt(arr[2])
+        ) {
+          array.push(key);
+        }
+      }
+      if (count === sizeOrders) {
+        if (array.length === 0) {
+          reject(-1);
+        }
+        resolve(array);
+      }
+    }
+   });
+};
+
+getFilteredOrdersByMonth = (element, orders) => {
+  return new Promise((resolve, reject) => {
+    let myOrders = orders.val();
+    let sizeOrders = orders.numChildren();
+    let count = 0;
+    const array = [];
+    for (let [key, elem] of Object.entries(myOrders)) {
+      
+      // Iterate OrdersGroupedByPlaces
+      count++;
+      if (elem.timestamp !== undefined) {
+        const date = new Date(elem.timestamp.split(" ")[0]);
+        const arr = element.split("-");
+
+        if (
+          date.getMonth() == arr[0] &&
+          date.getFullYear() == parseInt(arr[1])
+        ) {
+          array.push(key);
+        }
+      }
+      if (count === sizeOrders) {
+        if (array.length === 0) {
+          reject(-1);
+        }
+        resolve(array);
+      }
+    }
+   });
+};
+
+getFilteredOrdersByYear = (element, orders) => {
+  return new Promise((resolve, reject) => {
+    let myOrders = orders.val();
+    let sizeOrders = orders.numChildren();
+    let count = 0;
+    const array = [];
+    for (let [key, elem] of Object.entries(myOrders)) {
+      // Iterate OrdersGroupedByPlaces
+      count++;
+      if (elem.timestamp !== undefined) {
+        const date = new Date(elem.timestamp.split(" ")[0]);
+        const arr = element.split("-");
+        if (date.getFullYear() === parseInt(arr[0])) {
+          array.push(key);
+        }
+      }
+      
+      if (count === sizeOrders) {
+        if (array.length === 0) {
+          reject(-1);
+        }
+        resolve(array);
+      }
+    }
+   });
+}
+
+getDemandProducts = async (db, array) => {
+  try {
+    const jsonMostWanted = {};
+    for( let index = 0; index < array.length; index++) {
+      let cont = 0;
+      let orderProducts = await db.ref(`prod/orderProducts/${array[index]}`).once("value").then( dat => {
+        return dat.val();
+      });
+      for ( let [key, elem] of Object.entries(orderProducts) ) {
+        let product = await db.ref(`prod/orderProducts/${array[index]}/${key}`).once("value").then( data => {
+          return data.val();
+        });
+        if (jsonMostWanted[`${key}`]) {
+          jsonMostWanted[`${key}`].name = product.name;
+        } else {
+          jsonMostWanted[`${key}`] = {};
+          jsonMostWanted[`${key}`]["name"] = product.name;
+        }
+        if (jsonMostWanted[`${key}`].times) {
+          jsonMostWanted[`${key}`].times += product.quantity;
+        } else {
+          jsonMostWanted[`${key}`]["times"] = product.quantity;
+        }
+      }
+      if (index === array.length - 1) {
+        console.log(jsonMostWanted);
+        return (jsonMostWanted);
+      }
+    }
+  }
+  catch (error) {
+    console.log(error);
+  }
+}
+
+getProductsByMonth = async (req, res) => {
+  try {
+    const db = admin.database();
+    const ref = db.ref(`prod/ordersGroupedByPlaces/${req.body.idPlace}`);
+    const newDate = new Date();
+    const element = `${newDate.getMonth()}-${(
+      "0000" + newDate.getFullYear()
+    ).slice(-4)}`;
+    const array = [];
+    let orders = await getProducts(req, res, ref, element, array);
+    let filteredOrders = await getFilteredOrdersByMonth(element, orders).then(val => val).catch(error => error);
+    let demandProducts = {};
+      if (filteredOrders.length > 0) {
+        demandProducts = await getDemandProducts(db, filteredOrders);
+        res.status(200).send({ data: demandProducts });
+      }
+      else {
+        res.status(200).send({ data: {} });
+      }
+  }
+  catch (error) {
+    res.send({ data: {}, error: error });
+  }
+}
+
+getProductsByYear = async (req, res) => {
+  try {
+    const db = admin.database();
+    const ref = db.ref(`prod/ordersGroupedByPlaces/${req.body.idPlace}`);
+    const newDate = new Date();
+    const element = `${("0000" + newDate.getFullYear()).slice(-4)}`;
+    const array = [];
+    let orders = await getProducts(req, res, ref, element, array);
+    let filteredOrders = await getFilteredOrdersByYear(element, orders).then(val => val).catch(error => error);
+    let demandProducts = {};
+    console.log(filteredOrders);
+    if (filteredOrders.length > 0) {
+      demandProducts = await getDemandProducts(db, filteredOrders);
+      res.status(200).send({ data: demandProducts });
+    }
+    else {
+      res.status(200).send({ data: {} });
+    }
+  }
+  catch(error) {
+    res.send({ data: {}, error: error });
+  }
 };
 
 module.exports = {
