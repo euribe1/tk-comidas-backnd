@@ -12,6 +12,7 @@ import { AngularFireAuth } from "angularfire2/auth";
 
 import { AuthService } from "../../services/auth.service";
 import { error } from "util";
+import { Globals } from "../../globals";
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(
@@ -49,7 +50,8 @@ export class UpdatePasswordComponent implements OnInit {
     private http: Http,
     private router: Router,
     private authService: AuthService,
-    private angularFireAuth: AngularFireAuth
+    private angularFireAuth: AngularFireAuth,
+    private globals: Globals
   ) {
     this.authService.isLogged().subscribe(
       result => {
@@ -83,7 +85,7 @@ export class UpdatePasswordComponent implements OnInit {
       data.append("email", this.email);
       data.append("randomPassword", this.randomPswd);
       this.http
-        .post(`http://${this.ipAddress}/serverAdmin/auth/updateUser`, data)
+        .post(`http://${this.globals.environment["current"].ip}/auth/updateUser`, data)
         .subscribe(
           resp => {
             const res = JSON.parse(resp["_body"]);

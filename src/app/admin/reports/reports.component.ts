@@ -782,7 +782,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     const data = new URLSearchParams();
     data.append("idPlace", "-KqUfHv6pOigweWypUmH");
     this.http
-      .post(`http://${this.ipAddress}/serverAdmin/admin/getLast5ProductsByDay`, data)
+      .post(`http://${this.globals.environment["current"].ip}/admin/getLast5ProductsByDay`, data)
       .subscribe(res => {
         const resp = JSON.parse(res["_body"]);
         console.log(resp);
@@ -901,7 +901,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
       const data = new URLSearchParams();
       data.append("idPlace", "-KqUfHv6pOigweWypUmH");
       this.http
-        .post(`http://${this.ipAddress}/serverAdmin/admin/getProductsByMonth`, data)
+        .post(`http://${this.globals.environment["current"].ip}/admin/getProductsByMonth`, data)
         .subscribe(res => {
           const resp = JSON.parse(res["_body"]);
           console.log(resp);
@@ -949,7 +949,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
       const data = new URLSearchParams();
       data.append("idPlace", "-KqUfHv6pOigweWypUmH");
       this.http
-        .post(`http://${this.ipAddress}/serverAdmin/admin/getProductsByMonth`, data)
+        .post(`http://${this.globals.environment["current"].ip}/admin/getProductsByMonth`, data)
         .subscribe(res => {
           const resp = JSON.parse(res["_body"]);
           console.log(resp);
@@ -996,7 +996,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
       const data = new URLSearchParams();
       data.append("idPlace", "-KqUfHv6pOigweWypUmH");
       this.http
-        .post(`http://${this.ipAddress}/serverAdmin/admin/getProductsByYear`, data)
+        .post(`http://${this.globals.environment["current"].ip}/admin/getProductsByYear`, data)
         .subscribe(res => {
           const resp = JSON.parse(res["_body"]);
           console.log(resp);
@@ -1043,7 +1043,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
       const data = new URLSearchParams();
       data.append("idPlace", "-KqUfHv6pOigweWypUmH");
       this.http
-        .post(`http://${this.ipAddress}/serverAdmin/admin/getProductsByYear`, data)
+        .post(`http://${this.globals.environment["current"].ip}/admin/getProductsByYear`, data)
         .subscribe(res => {
           const resp = JSON.parse(res["_body"]);
           console.log(resp);

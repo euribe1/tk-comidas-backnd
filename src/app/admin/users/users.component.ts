@@ -154,7 +154,7 @@ export class UsersComponent implements OnInit {
           const data = new URLSearchParams();
           data.append("userId", user.id);
           this.http
-            .post(`http://${this.ipAddress}/serverAdmin/admin/deleteUser`, data)
+            .post(`http://${this.globals.environment["current"].ip}/admin/deleteUser`, data)
             .subscribe(
               resp => {
                 const res = JSON.parse(resp["_body"]);

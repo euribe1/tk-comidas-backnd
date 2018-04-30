@@ -118,7 +118,7 @@ export class CreateUserComponent implements OnInit, AfterViewInit {
       data.append("password", randomPassword);
       data.append("name", user.name);
       this.http
-        .post(`http://${this.ipAddress}/serverAdmin/admin/createUser`, data)
+        .post(`http://${this.globals.environment["current"].ip}/admin/createUser`, data)
         .subscribe(
           resp => {
             const res = JSON.parse(resp["_body"]);
@@ -175,8 +175,8 @@ export class CreateUserComponent implements OnInit, AfterViewInit {
               this.http
                 .post(
                   `http://${
-                    this.ipAddress
-                  }/serverAdmin/email/sendEmailToNotifyUpdatePassword`,
+                    this.globals.environment["current"].ip
+                  }/email/sendEmailToNotifyUpdatePassword`,
                   dataUser
                 )
                 .subscribe(
