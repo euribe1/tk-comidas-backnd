@@ -61,7 +61,6 @@ src/Cookies
 src/Cookies-journal
 src/Preferences
 src/User/
-src/app/globals.ts
 src/languagepacks.json
 src/logs/
 src/machineid
